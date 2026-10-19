@@ -1,0 +1,29 @@
+[
+  {
+    "name": "Patent imtihoni",
+    "summary": "Rossiyaga ishlashga kelgan muhojirlar uchun patent (kompleks) imtihoniga bepul tayyorlov — o'z ona tilingizda.",
+    "description": "«Patent imtihoni» — Rossiyada patent olish uchun topshiriladigan kompleks imtihonga (rus tili, tarix, qonunchilik) tayyorlanishga yordam beradi.",
+    "features": [
+      "Haqiqiy imtihonga o'xshash savollar va 16 ta variant",
+      "Mashq rejimi — xato qilingan savol biroz keyin yana so'raladi, shunda yodda qoladi",
+      "Ovozli savollar (tinglab tushunish mashqi)",
+      "To'liq o'z tilingizda: o'zbek (lotin), o'zbek (krill), tojik, qirg'iz",
+      "Internetsiz ishlaydi — bir marta o'rnatsangiz, hamma joyda ochiladi"
+    ],
+    "note": "Ilova butunlay bepul, reklamasiz va hech qanday ruxsat so'ramaydi. Biz buni odamlarga yaxshilik niyatida qildik."
+  },
+  {
+    "name": "Kub hisoblagich",
+    "subtitle": "Расчёт кубатуры",
+    "summary": "Yog'och zavodida doska va kubik kubaturasini bir zumda hisoblang.",
+    "description": "«Kub hisoblagich» — yog'ochni qayta ishlash ishlab chiqarishi uchun oddiy kubatura kalkulyatori. Bitta doskaning hajmini (sifr) doska soniga ko'paytiradi va natijani darhol m³ da ko'rsatadi.",
+    "features": [
+      "Standart doska va kubik o'lchamlari uchun tez tugmalar",
+      "O'z o'lchamlaringiz — sozlamalardan qo'shish, o'zgartirish yoki o'chirish mumkin",
+      "Bir smenalik ro'yxat va umumiy yakun",
+      "Ikki til: rus va o'zbek",
+      "Internetsiz, to'liq offline ishlaydi"
+    ],
+    "note": "Ilova hech qanday ruxsat so'ramaydi va hech qanday ma'lumot to'plamaydi."
+  }
+]
