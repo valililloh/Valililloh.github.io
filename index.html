@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https://github.com https://avatars.githubusercontent.com; connect-src 'self' https://api.github.com; base-uri 'self'; form-action 'none'; object-src 'none'">
+  <title>Kholmirzaev Valililloh | Portfolio</title>
+  <meta name="description" content="Kholmirzaev Valililloh: GitHub loyihalari, Telegram kanallari va ijtimoiy tarmoqlari bir joyda.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f7f7fb" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0f1117" media="(prefers-color-scheme: dark)">
+  <link rel="canonical" href="https://valililloh.github.io/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="uz_UZ">
+  <meta property="og:title" content="Kholmirzaev Valililloh | Portfolio">
+  <meta property="og:description" content="GitHub loyihalari, Telegram kanallari va ijtimoiy tarmoqlar bir joyda.">
+  <meta property="og:url" content="https://valililloh.github.io/">
+  <meta property="og:image" content="https://github.com/valililloh.png?size=400">
+  <meta name="twitter:card" content="summary">
+
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="preconnect" href="https://api.github.com" crossorigin>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <script src="js/theme-init.js"></script>
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Asosiy qismga o'tish</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#top" aria-label="Bosh sahifa">KV</a>
+      <nav class="site-nav" aria-label="Asosiy menyu">
+        <a href="#about">Men haqimda</a>
+        <a href="#projects">Loyihalar</a>
+        <a href="#channels">Kanallar</a>
+        <a href="#contact">Aloqa</a>
+      </nav>
+      <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Qorong'i rejimga o'tish">
+        <svg class="icon icon-sun" aria-hidden="true"><use href="assets/icons/icons.svg#sun"></use></svg>
+        <svg class="icon icon-moon" aria-hidden="true"><use href="assets/icons/icons.svg#moon"></use></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="container hero-inner">
+        <div class="avatar" id="avatar">
+          <img src="https://github.com/valililloh.png?size=240" alt="Kholmirzaev Valililloh" width="120" height="120" decoding="async" id="avatar-img">
+          <span class="avatar-fallback" aria-hidden="true">KV</span>
+        </div>
+        <p class="eyebrow">Salom, men</p>
+        <h1 id="hero-title">Kholmirzaev Valililloh</h1>
+        <p class="lead">Loyihalarim, Telegram kanallarim va ijtimoiy tarmoqlarim shu yerda jamlangan.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#projects">Loyihalarni ko'rish</a>
+          <a class="btn" href="https://github.com/valililloh" target="_blank" rel="noopener noreferrer">
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#github"></use></svg>GitHub
+          </a>
+          <a class="btn" href="https://t.me/xolmirzayev_v" target="_blank" rel="noopener noreferrer">
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#telegram"></use></svg>Telegram
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about" aria-labelledby="about-title">
+      <div class="container">
+        <h2 id="about-title">Men haqimda</h2>
+        <div class="prose" id="about-text"></div>
+        <h3 class="subtitle">Loyihalarimda ishlatilgan texnologiyalar</h3>
+        <ul class="tags" id="skills" aria-live="polite"></ul>
+      </div>
+    </section>
+
+    <section class="section" id="projects" aria-labelledby="projects-title">
+      <div class="container">
+        <h2 id="projects-title">Loyihalar</h2>
+        <p class="section-lead">GitHub'dagi barcha loyihalarim: nima qilishi va ulangan boti.</p>
+        <p class="status" id="projects-status" role="status">Loyihalar yuklanmoqda…</p>
+        <ul class="grid cards" id="projects-list"></ul>
+        <noscript><p class="status">Loyihalarni ko'rish uchun <a href="https://github.com/valililloh?tab=repositories">GitHub profilimga</a> o'ting.</p></noscript>
+      </div>
+    </section>
+
+    <section class="section" id="channels" aria-labelledby="channels-title">
+      <div class="container">
+        <h2 id="channels-title">Telegram kanallarim</h2>
+        <ul class="grid cards" id="channels-list"></ul>
+        <noscript><p class="status">Kanallar: @xolmirzayev_v, @kholmirzaev_kundaligi, @lkhvs1</p></noscript>
+      </div>
+    </section>
+
+    <section class="section" id="social" aria-labelledby="social-title">
+      <div class="container">
+        <h2 id="social-title">Ijtimoiy tarmoqlar</h2>
+        <ul class="grid social" id="social-list"></ul>
+      </div>
+    </section>
+
+    <section class="section" id="contact" aria-labelledby="contact-title">
+      <div class="container contact">
+        <h2 id="contact-title">Aloqa</h2>
+        <p class="section-lead">Taklif yoki savolingiz bo'lsa, quyidagi usullardan biri orqali yozing.</p>
+        <ul class="contact-list" id="contact-list"></ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year">2026</span> Kholmirzaev Valililloh</p>
+    </div>
+  </footer>
+</body>
+</html>

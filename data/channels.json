@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Portfolio",
+    "handle": "@xolmirzayev_v",
+    "description": { "uz": "Portfolio kanalim" },
+    "url": "https://t.me/xolmirzayev_v",
+    "icon": "briefcase"
+  },
+  {
+    "name": "Kundalik",
+    "handle": "@kholmirzaev_kundaligi",
+    "description": { "uz": "Kitoblar haqida kanal" },
+    "url": "https://t.me/kholmirzaev_kundaligi",
+    "icon": "book"
+  },
+  {
+    "name": "Playlist",
+    "handle": "@lkhvs1",
+    "description": { "uz": "Playlistim: yoqtirgan qo'shiqlarim" },
+    "url": "https://t.me/lkhvs1",
+    "icon": "music"
+  }
+]

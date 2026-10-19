@@ -1,0 +1,23 @@
+[
+  {
+    "id": "instagram",
+    "label": "Instagram",
+    "handle": "@valililloh_kh",
+    "url": "https://www.instagram.com/valililloh_kh/",
+    "icon": "instagram"
+  },
+  {
+    "id": "github",
+    "label": "GitHub",
+    "handle": "@valililloh",
+    "url": "https://github.com/valililloh",
+    "icon": "github"
+  },
+  {
+    "id": "telegram",
+    "label": "Telegram",
+    "handle": "@xolmirzayev_v",
+    "url": "https://t.me/xolmirzayev_v",
+    "icon": "telegram"
+  }
+]
