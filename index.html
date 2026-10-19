@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>valililloh — portfolio</title>
+  <meta name="description" content="valililloh: loyihalar, Telegram kanallar va aloqa.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f7f7f5" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styles.css">
+  <script>
+    try {
+      var t = localStorage.getItem('theme');
+      if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+    } catch (e) {}
+  </script>
+  <script src="js/main.js" type="module"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Asosiy qismga o'tish</a>
+
+  <header class="site-header">
+    <nav class="nav container" aria-label="Asosiy menyu">
+      <a class="nav__brand" href="#top">valililloh</a>
+      <ul class="nav__links">
+        <li><a href="#about">Men haqimda</a></li>
+        <li><a href="#projects">Loyihalar</a></li>
+        <li><a href="#channels">Kanallar</a></li>
+        <li><a href="#contact">Aloqa</a></li>
+      </ul>
+      <button class="theme-toggle" type="button" aria-label="Rejimni almashtirish">
+        <span class="theme-toggle__icon" aria-hidden="true"></span>
+      </button>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero container" id="top">
+      <p class="hero__eyebrow">Salom, men</p>
+      <h1 class="hero__title">valililloh</h1>
+      <p class="hero__lead" data-placeholder>Qisqa tanishtiruv tez orada qo'shiladi.</p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="#projects">Loyihalarim</a>
+        <a class="btn" href="#contact">Bog'lanish</a>
+      </div>
+    </section>
+
+    <section class="section container" id="about" aria-labelledby="about-title">
+      <h2 class="section__title" id="about-title">Men haqimda</h2>
+      <p class="muted" data-placeholder>Bu bo'lim tez orada to'ldiriladi.</p>
+    </section>
+
+    <section class="section container" id="projects" aria-labelledby="projects-title">
+      <h2 class="section__title" id="projects-title">Loyihalar</h2>
+      <div class="grid" data-list="projects" aria-live="polite">
+        <p class="muted">Yuklanmoqda…</p>
+      </div>
+    </section>
+
+    <section class="section container" id="channels" aria-labelledby="channels-title">
+      <h2 class="section__title" id="channels-title">Telegram kanallar</h2>
+      <div class="grid" data-list="channels">
+        <p class="muted">Yuklanmoqda…</p>
+      </div>
+    </section>
+
+    <section class="section container" id="contact" aria-labelledby="contact-title">
+      <h2 class="section__title" id="contact-title">Aloqa va ijtimoiy tarmoqlar</h2>
+      <ul class="link-list" data-list="links">
+        <li class="muted">Yuklanmoqda…</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="site-footer container">
+    <p class="muted">© <span data-year></span> valililloh</p>
+  </footer>
+</body>
+</html>
