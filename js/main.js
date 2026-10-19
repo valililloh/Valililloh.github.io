@@ -1,5 +1,5 @@
-import { loadProjects, loadChannels, loadLinks } from './data.js';
-import { projectCard, channelCard, linkItem, renderList, renderError } from './render.js';
+import { loadApps, loadProjects, loadChannels, loadLinks } from './data.js';
+import { appCard, projectCard, channelCard, linkItem, renderList, renderError } from './render.js';
 
 const ERROR_TEXT = "Ma'lumotni yuklab bo'lmadi. Keyinroq urinib ko'ring.";
 
@@ -34,6 +34,7 @@ async function fill(name, load, renderItem) {
 
 document.querySelector('[data-year]').textContent = String(new Date().getFullYear());
 setupThemeToggle();
+fill('apps', loadApps, appCard);
 fill('projects', loadProjects, projectCard);
 fill('channels', loadChannels, channelCard);
 fill('links', loadLinks, linkItem);

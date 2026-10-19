@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "name": "Telegram AI Platform",
+    "description": "Telegram kanallarni avtomatlashtiruvchi AI platforma: kunlik postlar, kontent kalendari, statistika va haftalik hisobotlar. AI izohlarga javob beradi va spamni filtrlaydi. Bitta bot bir nechta kanalga ulanadi, boshqaruv uchun web dashboard bor.",
+    "tech": ["Next.js", "TypeScript", "PostgreSQL", "Drizzle", "Tailwind"]
+  },
+  {
+    "name": "Yandex Disk Uploader",
+    "description": "Telegram'ga yuborilgan faylni yoki havolani to'g'ridan-to'g'ri Yandex Disk'ga yuklaydigan shaxsiy bot. Jarayonni foiz va tezlik bilan ko'rsatadi, oxirida tayyor havolani beradi.",
+    "tech": ["Python", "Telethon", "Yandex Disk API"]
+  },
+  {
+    "name": "VK Uploader",
+    "description": "Telegram'dagi yoki YouTube'dagi videoni nomi va heshteglari bilan VK guruhiga joylaydigan bot.",
+    "tech": ["Python", "Telethon", "yt-dlp", "VK API"]
+  },
+  {
+    "name": "Telegram Ads Market",
+    "status": "Ishlanmoqda",
+    "description": "Reklama beruvchi yo'nalishni tanlaydi, kanallar va tariflarni ko'radi va bot orqali buyurtma beradi. To'lov: chek orqali, Click/Payme yoki Telegram Stars.",
+    "tech": ["Python", "aiogram 3", "SQLAlchemy", "SQLite"]
+  }
+]

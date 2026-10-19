@@ -27,6 +27,11 @@ export async function loadProjects() {
     }));
 }
 
+export async function loadApps() {
+  const apps = await fetchJson('data/apps.json');
+  return apps.filter((a) => hasText(a.name));
+}
+
 export async function loadChannels() {
   const channels = await fetchJson('data/channels.json');
   return channels.filter((c) => hasText(c.name) && isSafeUrl(c.url));

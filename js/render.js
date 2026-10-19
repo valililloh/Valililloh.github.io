@@ -26,18 +26,45 @@ function link(href, text, className) {
   return a;
 }
 
+const strings = (value) => (Array.isArray(value) ? value.map(String) : []);
+
 export function projectCard(project) {
   const card = el('article', 'card');
-  card.append(el('h3', 'card__title', project.name));
+  const title = el('h3', 'card__title', project.name);
+  if (project.status) title.append(' ', el('span', 'badge', project.status));
+  card.append(title);
   card.append(el('p', 'card__text', project.description || ''));
 
-  const tech = Array.isArray(project.tech) ? project.tech : [];
+  const tech = strings(project.tech);
   if (tech.length > 0) {
     const tags = el('ul', 'tags');
-    tags.append(...tech.map((t) => el('li', '', String(t))));
+    tags.append(...tech.map((t) => el('li', '', t)));
     card.append(tags);
   }
   if (isSafeUrl(project.url)) card.append(link(project.url, "Ko'rish →"));
+  return card;
+}
+
+export function appCard(app) {
+  const card = el('article', 'card card--wide');
+  card.append(el('h3', 'card__title', app.name));
+  if (app.subtitle) card.append(el('p', 'card__subtitle muted', app.subtitle));
+  card.append(el('p', 'card__text', app.summary || ''));
+
+  const details = el('details', 'details');
+  details.append(el('summary', '', 'Batafsil'));
+  if (app.description) details.append(el('p', '', app.description));
+  const features = strings(app.features);
+  if (features.length > 0) {
+    details.append(el('p', 'details__label', 'Imkoniyatlar:'));
+    const list = el('ul', 'features');
+    list.append(...features.map((f) => el('li', '', f)));
+    details.append(list);
+  }
+  if (app.note) details.append(el('p', 'muted', app.note));
+  card.append(details);
+
+  if (isSafeUrl(app.url)) card.append(link(app.url, 'Yuklab olish →', 'btn btn--primary'));
   return card;
 }
 
