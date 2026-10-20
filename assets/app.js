@@ -111,6 +111,10 @@
       const v = t[n.dataset.t];
       if (v != null) n.textContent = v;
     });
+    document.querySelectorAll("[data-tl]").forEach((n) => {
+      n.setAttribute("aria-label", t[n.dataset.tl] || "");
+      n.title = t[n.dataset.tl] || "";
+    });
     document.querySelectorAll("[data-ph]").forEach((n) => {
       n.placeholder = t[n.dataset.ph] || "";
     });
@@ -132,6 +136,25 @@
     });
   });
 
+  /* Yorug' / qorong'i rejim: tanlov saqlanadi, tanlanmagan bo'lsa telefon sozlamasiga qaraydi */
+  const root = document.documentElement;
+  const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  const effectiveTheme = () => root.getAttribute("data-theme") || (darkQuery.matches ? "dark" : "light");
+  const syncThemeColor = () => {
+    const color = effectiveTheme() === "dark" ? "#0c0c10" : "#f6f5f0";
+    document.querySelectorAll('meta[name="theme-color"]').forEach((m) => {
+      m.removeAttribute("media");
+      m.setAttribute("content", color);
+    });
+  };
+  document.getElementById("theme").addEventListener("click", () => {
+    const next = effectiveTheme() === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("theme", next); } catch { /* storage unavailable */ }
+    syncThemeColor();
+  });
+  if (root.getAttribute("data-theme")) syncThemeColor();
+
   document.getElementById("yr").textContent = String(new Date().getFullYear());
   apply(detectLang());
 
@@ -151,7 +174,7 @@
     const url = `${SITE.apiUrl}/visit`;
     const body = () => JSON.stringify({ sid, vid, lang: current, ref: document.referrer });
     const ping = () => {
-      try { fetch(url, { method: "POST", body: body(), keepalive: true }); } catch { /* ignore */ }
+      try { fetch(url, { method: "POST", body: body(), keepalive: true }).catch(() => {}); } catch { /* ignore */ }
     };
     ping();
     const timer = setInterval(() => { if (document.visibilityState === "visible") ping(); }, 15000);
