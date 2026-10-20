@@ -5,8 +5,9 @@ window.SITE = {
   github: "https://github.com/valililloh",
   telegram: "https://t.me/valililloh_kh",
   email: "vkholmirzaev@gmail.com",
-  /* n8n webhook manzili (xabar formasi uchun). Bo'sh bo'lsa forma Telegram'ga yo'naltiradi. */
-  webhookUrl: ""
+  /* site-server manzili (Railway), oxirida / siz. Masalan: https://site-server-production.up.railway.app
+     Bo'sh bo'lsa forma Telegram'ga yo'naltiradi va tashriflar sanalmaydi. */
+  apiUrl: ""
 };
 
 window.UI = {

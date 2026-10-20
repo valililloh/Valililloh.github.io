@@ -135,7 +135,34 @@
   document.getElementById("yr").textContent = String(new Date().getFullYear());
   apply(detectLang());
 
-  /* Xabar formasi → n8n webhook → Telegram */
+  /* Anonim tashrif hisobi: kim ekani saqlanmaydi, faqat vaqt va qancha turgani.
+     O'z tashriflaringizni sanatmaslik uchun bir marta ?notrack=1 bilan oching. */
+  const track = () => {
+    if (!SITE.apiUrl) return;
+    const rid = () => Math.random().toString(36).slice(2, 12).padEnd(10, "0");
+    let vid = "";
+    try {
+      if (new URLSearchParams(location.search).get("notrack") === "1") localStorage.setItem("notrack", "1");
+      if (localStorage.getItem("notrack") === "1") return;
+      vid = localStorage.getItem("vid") || "";
+      if (!/^[a-z0-9]{10}$/.test(vid)) { vid = rid(); localStorage.setItem("vid", vid); }
+    } catch { vid = rid(); }
+    const sid = rid();
+    const url = `${SITE.apiUrl}/visit`;
+    const body = () => JSON.stringify({ sid, vid, lang: current, ref: document.referrer });
+    const ping = () => {
+      try { fetch(url, { method: "POST", body: body(), keepalive: true }); } catch { /* ignore */ }
+    };
+    ping();
+    const timer = setInterval(() => { if (document.visibilityState === "visible") ping(); }, 15000);
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "hidden" && navigator.sendBeacon) navigator.sendBeacon(url, body());
+    });
+    window.addEventListener("pagehide", () => clearInterval(timer));
+  };
+  track();
+
+  /* Xabar formasi → site-server → admin panel (+ Telegram) */
   const form = document.getElementById("msgform");
   const status = document.getElementById("status");
   const show = (cls, key) => {
@@ -153,13 +180,13 @@
       message: String(data.message || "").trim()
     };
     if (!payload.name || !payload.contact || !payload.message) { show("err", "errEmpty"); return; }
-    if (!SITE.webhookUrl) { show("err", "errOff"); return; }
+    if (!SITE.apiUrl) { show("err", "errOff"); return; }
 
     const btn = form.querySelector("button");
     btn.disabled = true;
     btn.textContent = UI[current].sending;
     try {
-      const res = await fetch(SITE.webhookUrl, {
+      const res = await fetch(`${SITE.apiUrl}/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...payload, lang: current, page: location.href })
