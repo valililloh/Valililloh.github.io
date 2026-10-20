@@ -14,6 +14,7 @@ window.UI = {
   uz: {
     metaTitle: "Valililloh Kholmirzaev — ilova va Telegram bot dasturchisi",
     metaDesc: "Ilovalar, Telegram botlar va avtomatlashtirish loyihalari. Yuklab olish havolalari va aloqa.",
+    themeLabel: "Yorug' / qorong'i rejim",
     navApps: "Ilovalar", navProjects: "Loyihalar", navChannels: "Kanallar", navContact: "Aloqa",
     open: "Yangi loyihalarga ochiqman",
     role: "Ilova va Telegram bot dasturchisi",
@@ -42,6 +43,7 @@ window.UI = {
   ru: {
     metaTitle: "Валилиллох Холмирзаев — разработчик приложений и Telegram-ботов",
     metaDesc: "Приложения, Telegram-боты и проекты автоматизации. Ссылки на скачивание и контакты.",
+    themeLabel: "Светлая / тёмная тема",
     navApps: "Приложения", navProjects: "Проекты", navChannels: "Каналы", navContact: "Контакты",
     open: "Открыт к новым проектам",
     role: "Разработчик приложений и Telegram-ботов",
@@ -70,6 +72,7 @@ window.UI = {
   en: {
     metaTitle: "Valililloh Kholmirzaev — app & Telegram bot developer",
     metaDesc: "Apps, Telegram bots and automation projects. Download links and contacts.",
+    themeLabel: "Light / dark mode",
     navApps: "Apps", navProjects: "Projects", navChannels: "Channels", navContact: "Contact",
     open: "Open to new projects",
     role: "App & Telegram bot developer",

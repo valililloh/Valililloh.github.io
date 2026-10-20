@@ -6,12 +6,19 @@
   --r: 18px;
   color-scheme: dark;
 }
+/* Yorug' rejim: tanlangan bo'lsa yoki telefon yorug' rejimda bo'lsa (qo'lda qorong'i tanlanmagan bo'lsa) */
+:root[data-theme="light"] {
+  --bg: #f6f5f0; --bg2: #ffffff; --line: #e2e0d8; --text: #16161c; --muted: #5f5f6b;
+  --accent-text: #4d7a00; --nav-bg: rgba(246, 245, 240, .82); --chip-bg: #f0efe8;
+  --glow: rgba(122, 92, 255, .18); --app-from: #efebff;
+  color-scheme: light;
+}
 @media (prefers-color-scheme: light) {
-  :root {
-    --bg: #f6f5f0; --bg2: #ffffff; --line: #e2e0d8; --text: #16161c; --muted: #5f5f6b;
-    --accent-text: #4d7a00; --nav-bg: rgba(246, 245, 240, .82); --chip-bg: #f0efe8;
-    --glow: rgba(122, 92, 255, .18); --app-from: #efebff;
-    color-scheme: light;
+  :root:not([data-theme="dark"]) {
+  --bg: #f6f5f0; --bg2: #ffffff; --line: #e2e0d8; --text: #16161c; --muted: #5f5f6b;
+  --accent-text: #4d7a00; --nav-bg: rgba(246, 245, 240, .82); --chip-bg: #f0efe8;
+  --glow: rgba(122, 92, 255, .18); --app-from: #efebff;
+  color-scheme: light;
   }
 }
 
@@ -29,6 +36,17 @@ nav .wrap { display: flex; align-items: center; justify-content: space-between; 
 .nav-links { display: flex; gap: 22px; font-size: 14px; color: var(--muted) }
 .nav-links a:hover { color: var(--text) }
 @media (max-width: 760px) { .nav-links { display: none } }
+.nav-right { display: flex; align-items: center; gap: 8px }
+.theme { width: 38px; height: 38px; flex: none; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%; background: none; color: var(--text); cursor: pointer }
+.theme svg { width: 18px; height: 18px }
+.theme .sun { display: none }
+:root[data-theme="dark"] .theme .sun { display: block }
+:root[data-theme="dark"] .theme .moon { display: none }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme .sun { display: block }
+  :root:not([data-theme="light"]) .theme .moon { display: none }
+}
+@media (max-width: 360px) { .logo { font-size: 13px } .lang button { padding: 6px 8px } }
 .lang { display: flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px }
 .lang button { background: none; border: 0; color: var(--muted); font: 700 12px Manrope, sans-serif; padding: 6px 10px; border-radius: 999px; cursor: pointer }
 .lang button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink) }
