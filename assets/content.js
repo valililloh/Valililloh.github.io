@@ -7,7 +7,7 @@ window.SITE = {
   email: "vkholmirzaev@gmail.com",
   /* site-server manzili (Railway), oxirida / siz. Masalan: https://site-server-production.up.railway.app
      Bo'sh bo'lsa forma Telegram'ga yo'naltiradi va tashriflar sanalmaydi. */
-  apiUrl: ""
+  apiUrl: "https://site-server-production-9932.up.railway.app"
 };
 
 window.UI = {
