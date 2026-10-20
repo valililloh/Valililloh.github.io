@@ -102,6 +102,7 @@ window.UI = {
 
 window.APPS = [
   {
+    id: "patent", /* bosishlar hisobi uchun nom */
     icon: "P",
     /* Yuklab olish havolasi (RuStore, APK va h.k.). Bo'sh bo'lsa "Havola tez orada" ko'rinadi. */
     download: "https://www.rustore.ru/catalog/app/com.kholmirzaev.patent",
@@ -147,6 +148,7 @@ window.APPS = [
     }
   },
   {
+    id: "kub",
     icon: "m³",
     alt: true,
     download: "https://www.rustore.ru/catalog/app/com.kholmirzaev.kubcalc",
