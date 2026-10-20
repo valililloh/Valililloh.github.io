@@ -28,8 +28,9 @@
     return "uz";
   };
 
-  const linkBtn = (cls, label, url) => {
+  const linkBtn = (cls, label, url, ev) => {
     const a = el("a", cls, label);
+    if (ev) a.dataset.ev = ev;
     if (url) {
       a.href = url;
       a.target = "_blank";
@@ -54,8 +55,8 @@
       list.append(...app.features[lang].map((f) => el("li", null, f)));
 
       const btns = el("div", "btns");
-      btns.append(linkBtn("btn btn-main", app.download ? t.download : t.soon, app.download));
-      if (app.source) btns.append(linkBtn("btn btn-ghost", t.source, app.source));
+      btns.append(linkBtn("btn btn-main", app.download ? t.download : t.soon, app.download, `dl:${app.id}`));
+      if (app.source) btns.append(linkBtn("btn btn-ghost", t.source, app.source, `src:${app.id}`));
 
       card.append(top, el("p", null, app.about[lang]), list, el("p", "note", app.note[lang]), btns);
       return card;
@@ -79,7 +80,7 @@
       card.append(badges, el("h3", null, p.name[lang]), el("p", null, p.desc[lang]));
       if (p.links) {
         const links = el("div", "links");
-        links.append(...p.links.map((l) => linkBtn(null, `${l.label} ↗`, l.url)));
+        links.append(...p.links.map((l) => linkBtn(null, `${l.label} ↗`, l.url, `gh:${l.label}`)));
         card.append(links);
       }
       card.append(stack);
@@ -160,16 +161,36 @@
 
   /* Tashrif hisobi: vaqt, qancha turgani va IP (serverda). Ism/username yig'ilmaydi.
      O'z tashriflaringizni sanatmaslik uchun bir marta ?notrack=1 bilan oching. */
-  const track = () => {
-    if (!SITE.apiUrl) return;
-    const rid = () => Math.random().toString(36).slice(2, 12).padEnd(10, "0");
-    let vid = "";
+  const rid = () => Math.random().toString(36).slice(2, 12).padEnd(10, "0");
+  const visitorId = () => {
+    if (!SITE.apiUrl) return "";
     try {
       if (new URLSearchParams(location.search).get("notrack") === "1") localStorage.setItem("notrack", "1");
-      if (localStorage.getItem("notrack") === "1") return;
-      vid = localStorage.getItem("vid") || "";
-      if (!/^[a-z0-9]{10}$/.test(vid)) { vid = rid(); localStorage.setItem("vid", vid); }
-    } catch { vid = rid(); }
+      if (localStorage.getItem("notrack") === "1") return "";
+      const saved = localStorage.getItem("vid") || "";
+      if (/^[a-z0-9]{10}$/.test(saved)) return saved;
+      const fresh = rid();
+      localStorage.setItem("vid", fresh);
+      return fresh;
+    } catch { return rid(); }
+  };
+  const vid = visitorId();
+
+  /* Bosishlar hisobi: data-ev belgili tugma/havolalar (masalan dl:patent, ct:telegram) */
+  const sendEvent = (name) => {
+    if (!vid) return;
+    const payload = JSON.stringify({ name, vid });
+    const url = `${SITE.apiUrl}/event`;
+    if (navigator.sendBeacon && navigator.sendBeacon(url, payload)) return;
+    try { fetch(url, { method: "POST", body: payload, keepalive: true }).catch(() => {}); } catch { /* ignore */ }
+  };
+  document.addEventListener("click", (e) => {
+    const target = e.target.closest("[data-ev]");
+    if (target && target.getAttribute("aria-disabled") !== "true") sendEvent(target.dataset.ev);
+  });
+
+  const track = () => {
+    if (!vid) return;
     const sid = rid();
     const url = `${SITE.apiUrl}/visit`;
     const body = () => JSON.stringify({ sid, vid, lang: current, ref: document.referrer });
@@ -217,6 +238,7 @@
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       form.reset();
       show("ok", "ok");
+      sendEvent("form:sent");
     } catch {
       show("err", "errSend");
     } finally {
