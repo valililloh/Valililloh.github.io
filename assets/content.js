@@ -100,7 +100,7 @@ window.APPS = [
   {
     icon: "P",
     /* Yuklab olish havolasi (RuStore, APK va h.k.). Bo'sh bo'lsa "Havola tez orada" ko'rinadi. */
-    download: "",
+    download: "https://www.rustore.ru/catalog/app/com.kholmirzaev.patent",
     source: "https://github.com/valililloh/Patent-ilova",
     name: { uz: "Patent imtihoni", ru: "Экзамен на патент", en: "Patent Exam" },
     tagline: {
