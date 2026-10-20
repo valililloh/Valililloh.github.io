@@ -3,119 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Valililloh Kholmirzaev</title>
-<meta name="description" content="Motion dizayner va Telegram bot / avtomatlashtirish dasturchisi. Ishlar, loyihalar, kanallar va aloqa.">
+<title>Valililloh Kholmirzaev — ilova va Telegram bot dasturchisi</title>
+<meta name="description" content="Ilovalar, Telegram botlar va avtomatlashtirish loyihalari. Yuklab olish havolalari va aloqa.">
 <meta property="og:title" content="Valililloh Kholmirzaev">
-<meta property="og:description" content="Motion dizayn · Telegram botlar · Avtomatlashtirish">
+<meta property="og:description" content="Ilovalar · Telegram botlar · AI avtomatlashtirish">
 <meta property="og:url" content="https://kholmirzaev.uz">
 <meta name="theme-color" content="#0c0c10" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#f6f5f0" media="(prefers-color-scheme: light)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#0c0c10; --bg2:#14141a; --line:#24242d; --text:#ececf1; --muted:#8d8d9b;
-  --accent:#c8ff3e; --accent-ink:#0c0c10; --accent2:#7a5cff; --accent-text:#c8ff3e;
-  --nav-bg:rgba(12,12,16,.75); --chip-bg:#1d1d25; --feature-from:#1a1430; --glow:rgba(122,92,255,.28);
-  color-scheme:dark;
-  --r:18px;
-}
-@media (prefers-color-scheme: light){:root{
-  --bg:#f6f5f0; --bg2:#ffffff; --line:#e2e0d8; --text:#16161c; --muted:#5f5f6b;
-  --accent-text:#4d7a00; --nav-bg:rgba(246,245,240,.8); --chip-bg:#f0efe8; --feature-from:#ece8ff; --glow:rgba(122,92,255,.18);
-  color-scheme:light;
-}}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:Manrope,system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-a{color:inherit;text-decoration:none}
-.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
-
-/* nav */
-nav{position:sticky;top:0;z-index:10;background:var(--nav-bg);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
-.logo{font-family:Unbounded;font-weight:800;font-size:15px;letter-spacing:.02em}
-.logo span{color:var(--accent-text)}
-.nav-links{display:flex;gap:22px;font-size:14px;color:var(--muted)}
-.nav-links a:hover{color:var(--text)}
-@media(max-width:640px){.nav-links{display:none}}
-.nav-cta{background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:13px;padding:8px 14px;border-radius:999px}
-
-/* hero */
-.hero{padding:72px 0 56px;position:relative}
-.hero::before{content:"";position:absolute;width:520px;height:520px;right:-160px;top:-120px;background:radial-gradient(circle,var(--glow),transparent 65%);pointer-events:none}
-.tag{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);border:1px solid var(--line);padding:6px 12px;border-radius:999px;margin-bottom:22px}
-.dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 0 rgba(200,255,62,.6);animation:pulse 2s infinite}
-@keyframes pulse{70%{box-shadow:0 0 0 10px rgba(200,255,62,0)}100%{box-shadow:0 0 0 0 rgba(200,255,62,0)}}
-h1{font-family:Unbounded;font-weight:800;font-size:clamp(38px,9vw,84px);line-height:1;letter-spacing:-.02em}
-h1 .out{color:transparent;-webkit-text-stroke:1.5px var(--text)}
-.lead{margin-top:22px;max-width:560px;color:var(--muted);font-size:17px}
-.lead b{color:var(--text);font-weight:600}
-.hero-btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 20px;border-radius:999px;font-weight:700;font-size:15px;transition:transform .15s}
-.btn:active{transform:scale(.97)}
-.btn-main{background:var(--accent);color:var(--accent-ink)}
-.btn-ghost{border:1px solid var(--line)}
-.btn-ghost:hover{border-color:var(--muted)}
-
-/* marquee */
-.marquee{border-block:1px solid var(--line);overflow:hidden;white-space:nowrap;padding:14px 0;margin-top:20px}
-.marquee div{display:inline-block;animation:slide 26s linear infinite;font-family:Unbounded;font-weight:500;font-size:15px;color:var(--muted)}
-.marquee i{font-style:normal;color:var(--accent-text);margin:0 18px}
-@keyframes slide{to{transform:translateX(-50%)}}
-@media(prefers-reduced-motion:reduce){.marquee div,.dot{animation:none}}
-
-/* sections */
-section{padding:72px 0 0}
-.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:26px}
-.sec-num{font-family:Unbounded;font-size:13px;color:var(--accent-text)}
-h2{font-family:Unbounded;font-weight:700;font-size:clamp(24px,5vw,36px);letter-spacing:-.01em}
-
-.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
-.card{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:10px;transition:border-color .2s,transform .2s;position:relative}
-a.card:hover{border-color:var(--accent);transform:translateY(-2px)}
-.card .ico{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:var(--chip-bg);color:var(--accent-text)}
-.card .ico svg{width:22px;height:22px}
-.card h3{font-size:17px;font-weight:700}
-.card p{font-size:14px;color:var(--muted)}
-.card .handle{font-size:13px;color:var(--accent-text);margin-top:auto}
-.arrow{position:absolute;top:20px;right:20px;color:var(--muted);font-size:18px}
-
-/* motion feature */
-.feature{background:linear-gradient(135deg,var(--feature-from),var(--bg2) 60%);border:1px solid var(--line);border-radius:24px;padding:30px;display:grid;gap:24px;grid-template-columns:1.2fr 1fr;align-items:center}
-@media(max-width:720px){.feature{grid-template-columns:1fr}}
-.feature p{color:var(--muted);margin-top:12px}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
-.chip{font-size:13px;border:1px solid var(--line);padding:5px 11px;border-radius:999px;color:var(--text)}
-.orb{aspect-ratio:1;max-width:260px;width:100%;justify-self:center;border-radius:50%;position:relative;background:conic-gradient(from 0deg,var(--accent),var(--accent2),#ff5c8a,var(--accent));animation:spin 9s linear infinite;filter:blur(.3px)}
-.orb::after{content:"";position:absolute;inset:14px;border-radius:50%;background:var(--bg2)}
-.orb span{position:absolute;inset:0;display:grid;place-items:center;z-index:1;font-family:Unbounded;font-weight:800;font-size:22px;animation:spin 9s linear infinite reverse}
-@keyframes spin{to{transform:rotate(360deg)}}
-@media(max-width:720px){.orb{max-width:150px}}
-
-/* projects */
-.repo-lang{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
-.repo-lang::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent2)}
-.muted-note{color:var(--muted);font-size:14px}
-
-/* contact */
-.contact{display:grid;gap:18px;grid-template-columns:1fr 1.3fr}
-@media(max-width:720px){.contact{grid-template-columns:1fr}}
-form{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:12px}
-label{font-size:13px;color:var(--muted)}
-input,textarea{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;color:var(--text);font:inherit;font-size:15px}
-input:focus,textarea:focus{outline:none;border-color:var(--accent)}
-textarea{min-height:120px;resize:vertical}
-form button{border:0;cursor:pointer;justify-content:center}
-.status{font-size:14px;min-height:20px}
-.status.ok{color:var(--accent-text)}
-.status.err{color:#ff7a8a}
-.hp{position:absolute;left:-9999px}
-
-footer{margin-top:80px;border-top:1px solid var(--line);padding:26px 0;color:var(--muted);font-size:13px}
-footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
-</style>
+<link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
@@ -123,109 +21,107 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
   <div class="wrap">
     <a class="logo" href="#">kholmirzaev<span>.uz</span></a>
     <div class="nav-links">
-      <a href="#motion">Motion</a>
-      <a href="#kanallar">Kanallar</a>
-      <a href="#loyihalar">Loyihalar</a>
-      <a href="#aloqa">Aloqa</a>
+      <a href="#ilovalar" data-t="navApps">Ilovalar</a>
+      <a href="#loyihalar" data-t="navProjects">Loyihalar</a>
+      <a href="#kanallar" data-t="navChannels">Kanallar</a>
+      <a href="#aloqa" data-t="navContact">Aloqa</a>
     </div>
-    <a class="nav-cta" href="#aloqa">Yozish</a>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="uz">UZ</button>
+      <button type="button" data-lang="ru">RU</button>
+      <button type="button" data-lang="en">EN</button>
+    </div>
   </div>
 </nav>
 
 <header class="hero">
   <div class="wrap">
-    <div class="tag"><span class="dot"></span> Yangi loyihalarga ochiqman</div>
+    <div class="tag"><span class="dot"></span> <span data-t="open">Yangi loyihalarga ochiqman</span></div>
     <h1>Valililloh<br><span class="out">Kholmirzaev</span></h1>
-    <p class="lead"><b>Motion dizayner</b> va <b>Telegram bot / avtomatlashtirish</b> dasturchisi. After Effects'da VFX, 3D va 2D animatsiyalar yarataman, n8n va kod bilan zerikarli ishlarni avtomatlashtiraman.</p>
-    <div class="hero-btns">
-      <a class="btn btn-main" href="#aloqa">Bog'lanish →</a>
-      <a class="btn btn-ghost" href="https://t.me/xolmirzayev_v" target="_blank" rel="noopener">Ishlarimni ko'rish</a>
+    <p class="role" data-t="role">Ilova va Telegram bot dasturchisi</p>
+    <p class="lead" data-t="lead"></p>
+    <div class="btns">
+      <a class="btn btn-main" href="#ilovalar" data-t="ctaApps">Ilovalarim</a>
+      <a class="btn btn-ghost" href="#aloqa" data-t="ctaContact">Bog'lanish →</a>
     </div>
   </div>
-  <div class="marquee" aria-hidden="true"><div>
-    Motion Design<i>✦</i>VFX & Tracking<i>✦</i>3D<i>✦</i>2D Animatsiya<i>✦</i>Telegram Botlar<i>✦</i>n8n Avtomatlashtirish<i>✦</i>After Effects<i>✦</i>
-    Motion Design<i>✦</i>VFX & Tracking<i>✦</i>3D<i>✦</i>2D Animatsiya<i>✦</i>Telegram Botlar<i>✦</i>n8n Avtomatlashtirish<i>✦</i>After Effects<i>✦</i>
-  </div></div>
+  <div class="marquee" aria-hidden="true"><div id="marquee"></div></div>
 </header>
 
 <main class="wrap">
 
-  <section id="motion">
-    <div class="sec-head"><span class="sec-num">01</span><h2>Motion dizayn</h2></div>
-    <div class="feature">
-      <div>
-        <h3 style="font-family:Unbounded;font-size:22px">Portfolio kanal</h3>
-        <p>Tracking va VFX, 3D sahnalar hamda ko'plab 2D animatsiyalar. Barcha ishlarim bitta Telegram kanalda jamlangan.</p>
-        <div class="chips">
-          <span class="chip">After Effects</span><span class="chip">Tracking / VFX</span><span class="chip">3D</span><span class="chip">2D animatsiya</span>
-        </div>
-        <div class="hero-btns"><a class="btn btn-main" href="https://t.me/xolmirzayev_v" target="_blank" rel="noopener">@xolmirzayev_v →</a></div>
-      </div>
-      <div class="orb"><span>FX</span></div>
-    </div>
+  <section id="ilovalar">
+    <div class="sec-head"><span class="sec-num">01</span><h2 data-t="appsTitle">Ilovalarim</h2></div>
+    <p class="sec-sub" data-t="appsSub"></p>
+    <div class="apps" id="apps"></div>
+  </section>
+
+  <section id="loyihalar">
+    <div class="sec-head"><span class="sec-num">02</span><h2 data-t="projectsTitle">Loyihalar</h2></div>
+    <p class="sec-sub" data-t="projectsSub"></p>
+    <div class="grid" id="projects"></div>
   </section>
 
   <section id="kanallar">
-    <div class="sec-head"><span class="sec-num">02</span><h2>Kanallarim</h2></div>
-    <div class="grid">
-      <a class="card" href="https://t.me/xolmirzayev_v" target="_blank" rel="noopener">
-        <span class="arrow">↗</span>
-        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9l5 3-5 3z" fill="currentColor"/></svg></div>
-        <h3>Portfolio</h3>
-        <p>Motion dizayn ishlarim: VFX, 3D, 2D.</p>
-        <span class="handle">t.me/xolmirzayev_v</span>
-      </a>
+    <div class="sec-head"><span class="sec-num">03</span><h2 data-t="channelsTitle">Kanallarim</h2></div>
+    <div class="grid" style="margin-top:26px">
       <a class="card" href="https://t.me/kholmirzaev_kundaligi" target="_blank" rel="noopener">
         <span class="arrow">↗</span>
         <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a2 2 0 012-2h13v16H6a2 2 0 00-2 2z"/><path d="M4 19V5"/></svg></div>
         <h3>Kholmirzaev kundaligi</h3>
-        <p>O'qigan kitoblarim va iqtiboslar.</p>
+        <p data-t="chKundalik"></p>
         <span class="handle">t.me/kholmirzaev_kundaligi</span>
       </a>
       <a class="card" href="https://t.me/lkhvs1" target="_blank" rel="noopener">
         <span class="arrow">↗</span>
         <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></div>
-        <h3>Qo'shiqlarim</h3>
-        <p>Qo'shiqlarim jamlangan kanal.</p>
+        <h3 data-t="chSongsTitle">Qo'shiqlarim</h3>
+        <p data-t="chSongs"></p>
         <span class="handle">t.me/lkhvs1</span>
+      </a>
+      <a class="card" href="https://t.me/xolmirzayev_v" target="_blank" rel="noopener">
+        <span class="arrow">↗</span>
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9l5 3-5 3z" fill="currentColor"/></svg></div>
+        <h3>Motion portfolio</h3>
+        <p data-t="chPortfolio"></p>
+        <span class="handle">t.me/xolmirzayev_v</span>
       </a>
       <a class="card" href="https://instagram.com/valililloh_kh" target="_blank" rel="noopener">
         <span class="arrow">↗</span>
         <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></div>
         <h3>Instagram</h3>
-        <p>Kundalik hayot va yangi ishlar.</p>
+        <p data-t="chInsta"></p>
         <span class="handle">@valililloh_kh</span>
       </a>
     </div>
   </section>
 
-  <section id="loyihalar">
-    <div class="sec-head"><span class="sec-num">03</span><h2>Loyihalar</h2></div>
-    <div class="grid" id="repos">
-      <p class="muted-note">GitHub loyihalari yuklanmoqda…</p>
-    </div>
-  </section>
-
   <section id="aloqa">
-    <div class="sec-head"><span class="sec-num">04</span><h2>Aloqa</h2></div>
-    <div class="contact">
+    <div class="sec-head"><span class="sec-num">04</span><h2 data-t="contactTitle">Aloqa</h2></div>
+    <div class="contact" style="margin-top:26px">
       <div class="grid" style="grid-template-columns:1fr;align-content:start">
-        <a class="card" id="tg-contact" href="https://t.me/xolmirzayev_v" target="_blank" rel="noopener">
+        <a class="card" id="tg-contact" href="https://t.me/valililloh_kh" target="_blank" rel="noopener">
           <span class="arrow">↗</span>
-          <h3>Telegram</h3>
-          <p>Tezkor savol bo'lsa, to'g'ridan-to'g'ri yozing.</p>
+          <h3 data-t="tgTitle">Telegram</h3>
+          <p data-t="tgText"></p>
+          <span class="handle">@valililloh_kh</span>
+        </a>
+        <a class="card" href="https://github.com/valililloh" target="_blank" rel="noopener">
+          <span class="arrow">↗</span>
+          <h3>GitHub</h3>
+          <span class="handle">github.com/valililloh</span>
         </a>
         <div class="card">
-          <h3>Xabar qoldiring</h3>
-          <p>Onlayn bo'lmasam ham, xabaringiz menga darhol yetib keladi va albatta javob beraman.</p>
+          <h3 data-t="msgTitle">Xabar qoldiring</h3>
+          <p data-t="msgText"></p>
         </div>
       </div>
       <form id="msgform" novalidate>
-        <div><label for="f-name">Ismingiz</label><input id="f-name" name="name" required maxlength="80" autocomplete="name"></div>
-        <div><label for="f-contact">Telegram yoki telefon</label><input id="f-contact" name="contact" required maxlength="80" placeholder="@username yoki +998…"></div>
-        <div><label for="f-msg">Xabar</label><textarea id="f-msg" name="message" required maxlength="2000" placeholder="Qanday loyiha yoki savol?"></textarea></div>
+        <div><label for="f-name" data-t="fName">Ismingiz</label><input id="f-name" name="name" required maxlength="80" autocomplete="name"></div>
+        <div><label for="f-contact" data-t="fContact">Telegram yoki telefon</label><input id="f-contact" name="contact" required maxlength="80" data-ph="fContactPh"></div>
+        <div><label for="f-msg" data-t="fMsg">Xabar</label><textarea id="f-msg" name="message" required maxlength="2000" data-ph="fMsgPh"></textarea></div>
         <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <button class="btn btn-main" type="submit">Yuborish</button>
+        <button class="btn btn-main" type="submit" data-t="send">Yuborish</button>
         <div class="status" id="status" role="status"></div>
       </form>
     </div>
@@ -240,67 +136,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
   </div>
 </footer>
 
-<script>
-/* ===== SOZLAMALAR — faqat shu yerni o'zgartirasiz ===== */
-const CONFIG = {
-  githubUser: "Valililloh",       // GitHub username
-  telegramUser: "valililloh_kh",  // shaxsiy Telegram username (@ belgisisiz)
-  webhookUrl: ""           // n8n webhook manzili (forma xabarlari uchun)
-};
-/* ======================================================= */
-
-document.getElementById('yr').textContent = new Date().getFullYear();
-
-if (CONFIG.telegramUser) {
-  document.getElementById('tg-contact').href = 'https://t.me/' + CONFIG.telegramUser;
-}
-
-// GitHub loyihalari
-(async () => {
-  const box = document.getElementById('repos');
-  if (!CONFIG.githubUser) { box.innerHTML = '<p class="muted-note">Loyihalar tez orada qo\'shiladi.</p>'; return; }
-  try {
-    const r = await fetch(`https://api.github.com/users/${CONFIG.githubUser}/repos?sort=updated&per_page=12`);
-    if (!r.ok) throw 0;
-    const repos = (await r.json()).filter(x => !x.fork && x.name.toLowerCase() !== `${CONFIG.githubUser.toLowerCase()}.github.io`);
-    if (!repos.length) { box.innerHTML = '<p class="muted-note">Loyihalar tez orada qo\'shiladi.</p>'; return; }
-    box.innerHTML = '';
-    for (const x of repos) {
-      const a = document.createElement('a');
-      a.className = 'card'; a.href = x.html_url; a.target = '_blank'; a.rel = 'noopener';
-      a.innerHTML = '<span class="arrow">↗</span><h3></h3><p></p>' + (x.language ? '<span class="repo-lang"></span>' : '');
-      a.querySelector('h3').textContent = x.name.replace(/[-_]/g, ' ');
-      a.querySelector('p').textContent = x.description || 'Tavsif yo\'q';
-      if (x.language) a.querySelector('.repo-lang').textContent = x.language;
-      box.appendChild(a);
-    }
-  } catch { box.innerHTML = `<p class="muted-note">Loyihalarni <a style="color:var(--accent-text)" href="https://github.com/${CONFIG.githubUser}">GitHub sahifamda</a> ko'ring.</p>`; }
-})();
-
-// Xabar formasi → n8n → Telegram
-document.getElementById('msgform').addEventListener('submit', async e => {
-  e.preventDefault();
-  const f = e.target, st = document.getElementById('status');
-  const d = Object.fromEntries(new FormData(f));
-  if (d.website) return; // spam-bot
-  if (!d.name.trim() || !d.contact.trim() || !d.message.trim()) {
-    st.className = 'status err'; st.textContent = 'Iltimos, barcha maydonlarni to\'ldiring.'; return;
-  }
-  if (!CONFIG.webhookUrl) {
-    st.className = 'status err'; st.textContent = 'Forma hali ulanmagan. Telegram orqali yozing.'; return;
-  }
-  const btn = f.querySelector('button'); btn.disabled = true; btn.textContent = 'Yuborilmoqda…';
-  try {
-    const r = await fetch(CONFIG.webhookUrl, {
-      method: 'POST', headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({name: d.name, contact: d.contact, message: d.message, page: location.href})
-    });
-    if (!r.ok) throw 0;
-    f.reset(); st.className = 'status ok'; st.textContent = 'Rahmat! Xabaringiz yetib bordi, tez orada javob beraman.';
-  } catch {
-    st.className = 'status err'; st.textContent = 'Yuborilmadi. Iltimos, Telegram orqali yozing.';
-  } finally { btn.disabled = false; btn.textContent = 'Yuborish'; }
-});
-</script>
+<script src="assets/content.js"></script>
+<script src="assets/app.js"></script>
 </body>
 </html>

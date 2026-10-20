@@ -1,7 +1,7 @@
 # Valililloh portfolio
 
 Kholmirzaev (valililloh) ning shaxsiy portfolio sayti. GitHub Pages'da joylashadi,
-keyinchalik shaxsiy `.uz` domenga ulanadi (domen hozircha tasdiqlanishini kutmoqda).
+`kholmirzaev.uz` domeniga ulangan.
 
 ## Sayt bo'limlari
 - **Bosh sahifa (hero):** ism, qisqa tanishtiruv, asosiy havolalar.
@@ -13,8 +13,9 @@ keyinchalik shaxsiy `.uz` domenga ulanadi (domen hozircha tasdiqlanishini kutmoq
 - **Ijtimoiy tarmoqlar:** Instagram, Telegram, GitHub va boshqalar.
 - **Aloqa:** bog'lanish usullari.
 
-Havolalar va kanallar ro'yxati hali berilmagan: yozishdan oldin foydalanuvchidan so'rang,
-o'ylab topmang.
+Barcha matnlar (uz/ru/en), ilovalar va loyihalar `assets/content.js` da. Yangi havola,
+ilova yoki loyiha ma'lumotini o'ylab topmang: foydalanuvchidan so'rang.
+Til tanlash: `?lang=uz|ru|en`, keyin saqlangan tanlov, keyin brauzer tili.
 
 ## Texnologiyalar
 - Statik sayt: HTML, CSS, oddiy JavaScript. Build bosqichi yo'q, GitHub Pages
