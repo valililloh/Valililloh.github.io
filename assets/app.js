@@ -135,7 +135,7 @@
   document.getElementById("yr").textContent = String(new Date().getFullYear());
   apply(detectLang());
 
-  /* Anonim tashrif hisobi: kim ekani saqlanmaydi, faqat vaqt va qancha turgani.
+  /* Tashrif hisobi: vaqt, qancha turgani va IP (serverda). Ism/username yig'ilmaydi.
      O'z tashriflaringizni sanatmaslik uchun bir marta ?notrack=1 bilan oching. */
   const track = () => {
     if (!SITE.apiUrl) return;
