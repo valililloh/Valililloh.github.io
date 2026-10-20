@@ -4,6 +4,7 @@
 window.SITE = {
   github: "https://github.com/valililloh",
   telegram: "https://t.me/valililloh_kh",
+  email: "vkholmirzaev@gmail.com",
   /* n8n webhook manzili (xabar formasi uchun). Bo'sh bo'lsa forma Telegram'ga yo'naltiradi. */
   webhookUrl: ""
 };
@@ -29,7 +30,7 @@ window.UI = {
     chInsta: "Kundalik hayot va yangi ishlar.",
     contactTitle: "Aloqa",
     tgTitle: "Telegram", tgText: "Tezkor savol bo'lsa, to'g'ridan-to'g'ri yozing.",
-    msgTitle: "Xabar qoldiring", msgText: "Onlayn bo'lmasam ham, xabaringiz menga darhol yetib keladi va albatta javob beraman.",
+    emailText: "Hamkorlik va takliflar uchun.", msgTitle: "Xabar qoldiring", msgText: "Onlayn bo'lmasam ham, xabaringiz menga darhol yetib keladi va albatta javob beraman.",
     fName: "Ismingiz", fContact: "Telegram yoki telefon", fContactPh: "@username yoki +998…",
     fMsg: "Xabar", fMsgPh: "Qanday loyiha yoki savol?", send: "Yuborish", sending: "Yuborilmoqda…",
     errEmpty: "Iltimos, barcha maydonlarni to'ldiring.",
@@ -57,7 +58,7 @@ window.UI = {
     chInsta: "Повседневная жизнь и новые работы.",
     contactTitle: "Контакты",
     tgTitle: "Telegram", tgText: "Если вопрос срочный — пишите напрямую.",
-    msgTitle: "Оставьте сообщение", msgText: "Даже если я не в сети, сообщение сразу придёт мне, и я обязательно отвечу.",
+    emailText: "Для сотрудничества и предложений.", msgTitle: "Оставьте сообщение", msgText: "Даже если я не в сети, сообщение сразу придёт мне, и я обязательно отвечу.",
     fName: "Ваше имя", fContact: "Telegram или телефон", fContactPh: "@username или +7…",
     fMsg: "Сообщение", fMsgPh: "Какой проект или вопрос?", send: "Отправить", sending: "Отправка…",
     errEmpty: "Пожалуйста, заполните все поля.",
@@ -85,7 +86,7 @@ window.UI = {
     chInsta: "Everyday life and new work.",
     contactTitle: "Contact",
     tgTitle: "Telegram", tgText: "For a quick question, message me directly.",
-    msgTitle: "Leave a message", msgText: "Even when I'm offline, your message reaches me right away and I will reply.",
+    emailText: "For collaboration and offers.", msgTitle: "Leave a message", msgText: "Even when I'm offline, your message reaches me right away and I will reply.",
     fName: "Your name", fContact: "Telegram or phone", fContactPh: "@username or +…",
     fMsg: "Message", fMsgPh: "What project or question?", send: "Send", sending: "Sending…",
     errEmpty: "Please fill in all fields.",
@@ -144,7 +145,7 @@ window.APPS = [
   {
     icon: "m³",
     alt: true,
-    download: "",
+    download: "https://www.rustore.ru/catalog/app/com.kholmirzaev.kubcalc",
     source: "",
     name: { uz: "Kub hisoblagich", ru: "Расчёт кубатуры", en: "Lumber Volume Calculator" },
     tagline: {
