@@ -37,8 +37,7 @@ window.UI = {
     errEmpty: "Iltimos, barcha maydonlarni to'ldiring.",
     errOff: "Forma hali ulanmagan. Iltimos, Telegram orqali yozing.",
     errSend: "Yuborilmadi. Iltimos, Telegram orqali yozing.",
-    ok: "Rahmat! Xabaringiz yetib bordi, tez orada javob beraman.",
-    privacy: "Sayt statistika uchun tashrif vaqti va IP manzilni saqlaydi."
+    ok: "Rahmat! Xabaringiz yetib bordi, tez orada javob beraman."
   },
   ru: {
     metaTitle: "Валилиллох Холмирзаев — разработчик приложений и Telegram-ботов",
@@ -66,8 +65,7 @@ window.UI = {
     errEmpty: "Пожалуйста, заполните все поля.",
     errOff: "Форма пока не подключена. Пожалуйста, напишите в Telegram.",
     errSend: "Не удалось отправить. Пожалуйста, напишите в Telegram.",
-    ok: "Спасибо! Сообщение доставлено, скоро отвечу.",
-    privacy: "Для статистики сайт сохраняет время посещения и IP-адрес."
+    ok: "Спасибо! Сообщение доставлено, скоро отвечу."
   },
   en: {
     metaTitle: "Valililloh Kholmirzaev — app & Telegram bot developer",
@@ -95,8 +93,7 @@ window.UI = {
     errEmpty: "Please fill in all fields.",
     errOff: "The form isn't connected yet. Please message me on Telegram.",
     errSend: "Couldn't send. Please message me on Telegram.",
-    ok: "Thank you! Your message has arrived, I'll reply soon.",
-    privacy: "For statistics, this site stores visit time and IP address."
+    ok: "Thank you! Your message has arrived, I'll reply soon."
   }
 };
 
