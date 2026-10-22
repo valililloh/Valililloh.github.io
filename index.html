@@ -44,8 +44,8 @@
   ]
 }
 </script>
-<meta name="theme-color" content="#0c0c10" media="(prefers-color-scheme: dark)">
-<meta name="theme-color" content="#f6f5f0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#efede8" media="(prefers-color-scheme: light)">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16.png">
@@ -53,22 +53,27 @@
 <link rel="manifest" href="/site.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
 <script>
   try { var t = localStorage.getItem("theme"); if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t); } catch (e) {}
+  document.documentElement.classList.add("js");
 </script>
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
-<nav>
-  <div class="wrap">
-    <a class="logo" href="#">kholmirzaev<span>.uz</span></a>
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader-word"><span>K</span><span>H</span><span class="dot">.</span></div>
+</div>
+
+<nav class="nav">
+  <div class="wrap nav-in">
+    <a class="logo" href="#top">KH<span>.</span></a>
     <div class="nav-links">
-      <a href="#ilovalar" data-t="navApps">Ilovalar</a>
-      <a href="#loyihalar" data-t="navProjects">Loyihalar</a>
-      <a href="#kanallar" data-t="navChannels">Kanallar</a>
-      <a href="#aloqa" data-t="navContact">Aloqa</a>
+      <a href="#about" data-t="aboutTitle">MEN HAQIMDA</a>
+      <a href="#apps" data-t="navApps">Ilovalar</a>
+      <a href="#works" data-t="navProjects">Loyihalar</a>
+      <a href="#talk" data-t="navContact">Aloqa</a>
     </div>
     <div class="nav-right">
       <button class="theme" type="button" id="theme" data-tl="themeLabel">
@@ -84,115 +89,145 @@
   </div>
 </nav>
 
-<header class="hero">
-  <div class="wrap">
-    <div class="tag"><span class="dot"></span> <span data-t="open">Yangi loyihalarga ochiqman</span></div>
-    <h1>Valililloh<br><span class="out">Kholmirzaev</span></h1>
-    <p class="role" data-t="role">Ilova va Telegram bot dasturchisi</p>
-    <p class="lead" data-t="lead"></p>
-    <div class="btns">
-      <a class="btn btn-main" href="#ilovalar" data-t="ctaApps">Ilovalarim</a>
-      <a class="btn btn-ghost" href="#aloqa" data-t="ctaContact">Bog'lanish →</a>
+<main id="top">
+
+  <!-- 1. Bosh sahifa -->
+  <header class="hero paper">
+    <div class="wrap hero-in">
+      <div class="hero-meta">
+        <span class="status"><i></i><span data-t="open">Yangi loyihalarga ochiqman</span></span>
+        <span class="hero-name">Valililloh Kholmirzaev</span>
+      </div>
+      <h1 class="hero-title">
+        <span class="ht ht-a" data-t="heroA">ISHLARIMNI</span>
+        <span class="portrait" id="portrait" aria-hidden="true">
+          <svg viewBox="0 0 400 480" preserveAspectRatio="xMidYMax meet">
+            <defs>
+              <linearGradient id="pg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="var(--ink)" stop-opacity=".92"/>
+                <stop offset="1" stop-color="var(--ink)" stop-opacity="1"/>
+              </linearGradient>
+              <radialGradient id="pl" cx=".62" cy=".28" r=".55">
+                <stop offset="0" stop-color="var(--paper)" stop-opacity=".22"/>
+                <stop offset="1" stop-color="var(--paper)" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <path fill="url(#pg)" d="M200 40c-58 0-96 44-96 104 0 36 13 66 33 86 6 6 9 14 9 23v18c0 10-6 19-16 23l-60 24C30 334 8 364 8 400v80h384v-80c0-36-22-66-62-82l-60-24c-10-4-16-13-16-23v-18c0-9 3-17 9-23 20-20 33-50 33-86 0-60-38-104-96-104z"/>
+            <path fill="url(#pl)" d="M200 40c-58 0-96 44-96 104 0 36 13 66 33 86 6 6 9 14 9 23v18c0 10-6 19-16 23l-60 24C30 334 8 364 8 400v80h384v-80c0-36-22-66-62-82l-60-24c-10-4-16-13-16-23v-18c0-9 3-17 9-23 20-20 33-50 33-86 0-60-38-104-96-104z"/>
+          </svg>
+        </span>
+        <span class="ht ht-b" data-t="heroB">KO'RING</span>
+      </h1>
+      <div class="hero-foot">
+        <p class="hero-side" data-t="heroSide"></p>
+        <a class="scroll-hint" href="#about"><span data-t="scroll">Pastga suring</span> <b aria-hidden="true">↓</b></a>
+      </div>
     </div>
-  </div>
-  <div class="marquee" aria-hidden="true"><div id="marquee"></div></div>
-</header>
+  </header>
 
-<main class="wrap">
-
-  <section id="ilovalar">
-    <div class="sec-head"><span class="sec-num">01</span><h2 data-t="appsTitle">Ilovalarim</h2></div>
-    <p class="sec-sub" data-t="appsSub"></p>
-    <div class="apps" id="apps"></div>
-  </section>
-
-  <section id="loyihalar">
-    <div class="sec-head"><span class="sec-num">02</span><h2 data-t="projectsTitle">Loyihalar</h2></div>
-    <p class="sec-sub" data-t="projectsSub"></p>
-    <div class="grid" id="projects"></div>
-  </section>
-
-  <section id="kanallar">
-    <div class="sec-head"><span class="sec-num">03</span><h2 data-t="channelsTitle">Kanallarim</h2></div>
-    <div class="grid" style="margin-top:26px">
-      <a class="card" href="https://t.me/kholmirzaev_kundaligi" target="_blank" rel="noopener" data-ev="ch:kundalik">
-        <span class="arrow">↗</span>
-        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a2 2 0 012-2h13v16H6a2 2 0 00-2 2z"/><path d="M4 19V5"/></svg></div>
-        <h3>Kholmirzaev kundaligi</h3>
-        <p data-t="chKundalik"></p>
-        <span class="handle">t.me/kholmirzaev_kundaligi</span>
-      </a>
-      <a class="card" href="https://t.me/lkhvs1" target="_blank" rel="noopener" data-ev="ch:songs">
-        <span class="arrow">↗</span>
-        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></div>
-        <h3 data-t="chSongsTitle">Qo'shiqlarim</h3>
-        <p data-t="chSongs"></p>
-        <span class="handle">t.me/lkhvs1</span>
-      </a>
-      <a class="card" href="https://t.me/xolmirzayev_v" target="_blank" rel="noopener" data-ev="ch:portfolio">
-        <span class="arrow">↗</span>
-        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9l5 3-5 3z" fill="currentColor"/></svg></div>
-        <h3>Motion portfolio</h3>
-        <p data-t="chPortfolio"></p>
-        <span class="handle">t.me/xolmirzayev_v</span>
-      </a>
-      <a class="card" href="https://instagram.com/valililloh_kh" target="_blank" rel="noopener" data-ev="ch:instagram">
-        <span class="arrow">↗</span>
-        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></div>
-        <h3>Instagram</h3>
-        <p data-t="chInsta"></p>
-        <span class="handle">@valililloh_kh</span>
-      </a>
-    </div>
-  </section>
-
-  <section id="aloqa">
-    <div class="sec-head"><span class="sec-num">04</span><h2 data-t="contactTitle">Aloqa</h2></div>
-    <div class="contact" style="margin-top:26px">
-      <div class="grid" style="grid-template-columns:1fr;align-content:start">
-        <a class="card" id="tg-contact" href="https://t.me/valililloh_kh" target="_blank" rel="noopener" data-ev="ct:telegram">
-          <span class="arrow">↗</span>
-          <h3 data-t="tgTitle">Telegram</h3>
-          <p data-t="tgText"></p>
-          <span class="handle">@valililloh_kh</span>
-        </a>
-        <a class="card" href="mailto:vkholmirzaev@gmail.com" data-ev="ct:email">
-          <span class="arrow">↗</span>
-          <h3>Email</h3>
-          <p data-t="emailText"></p>
-          <span class="handle">vkholmirzaev@gmail.com</span>
-        </a>
-        <a class="card" href="https://github.com/valililloh" target="_blank" rel="noopener" data-ev="ct:github">
-          <span class="arrow">↗</span>
-          <h3>GitHub</h3>
-          <span class="handle">github.com/valililloh</span>
-        </a>
-        <div class="card">
-          <h3 data-t="msgTitle">Xabar qoldiring</h3>
-          <p data-t="msgText"></p>
+  <!-- 2. Men haqimda: yulduzli tun foni va kattalashadigan karta -->
+  <section class="about dark" id="about">
+    <div class="pin">
+      <canvas class="swirl" id="swirl" aria-hidden="true"></canvas>
+      <div class="about-card" id="aboutCard">
+        <div class="beam" aria-hidden="true"></div>
+        <h2 class="about-title" data-t="aboutTitle">MEN HAQIMDA</h2>
+        <div class="about-body">
+          <p class="about-text" data-t="aboutText"></p>
+          <span class="about-note" data-t="aboutNote"></span>
         </div>
       </div>
-      <form id="msgform" novalidate>
-        <div><label for="f-name" data-t="fName">Ismingiz</label><input id="f-name" name="name" required maxlength="80" autocomplete="name"></div>
-        <div><label for="f-contact" data-t="fContact">Telegram yoki telefon</label><input id="f-contact" name="contact" required maxlength="80" data-ph="fContactPh"></div>
-        <div><label for="f-msg" data-t="fMsg">Xabar</label><textarea id="f-msg" name="message" required maxlength="2000" data-ph="fMsgPh"></textarea></div>
-        <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <button class="btn btn-main" type="submit" data-t="send">Yuborish</button>
-        <div class="status" id="status" role="status"></div>
-      </form>
     </div>
   </section>
 
-</main>
+  <!-- 3. Qayerda bo'lganman -->
+  <section class="path dark" id="path">
+    <div class="pin">
+      <div class="ghost" id="ghost" aria-hidden="true">2025 · 2026 · 2025 · 2026 · 2025 · 2026</div>
+      <div class="wrap path-in">
+        <h2 class="path-title"><span data-t="pathTitleA">QAYERDA</span><span data-t="pathTitleB">BO'LGANMAN</span></h2>
+        <p class="path-sub" data-t="pathSub"></p>
+        <div class="roles" id="roles" aria-hidden="true"></div>
+        <ol class="timeline" id="timeline"></ol>
+      </div>
+    </div>
+  </section>
 
-<footer>
-  <div class="wrap">
-    <span>© <span id="yr"></span> Valililloh Kholmirzaev</span>
-    <a href="mailto:vkholmirzaev@gmail.com" data-ev="ct:email">vkholmirzaev@gmail.com</a>
-  </div>
-</footer>
+  <!-- 4. Tanlangan ilovalar -->
+  <section class="feat paper" id="apps">
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow">RuStore</span><h2 class="big" data-t="featTitle">TANLANGAN ILOVALAR</h2></div>
+      <p class="sec-sub" data-t="appsSub"></p>
+      <div class="feat-list" id="appsList"></div>
+    </div>
+  </section>
+
+  <!-- 5. Ishlar: aylanuvchi halqa, keyin ro'yxat -->
+  <section class="works paper" id="works">
+    <div class="ring-zone" id="ringZone">
+      <div class="pin">
+        <div class="works-head wrap"><span class="eyebrow" data-t="worksSub"></span></div>
+        <div class="ring-stage">
+          <div class="ring" id="ring"></div>
+          <div class="ring-label" data-t="worksTitle">ISHLAR '26</div>
+        </div>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="work-list" id="projects"></div>
+    </div>
+  </section>
+
+  <!-- 6. Xizmatlar -->
+  <section class="services paper" id="services">
+    <div class="wrap">
+      <h2 class="big center" data-t="servicesTitle">NIMA QILIB BERAMAN</h2>
+      <div class="svc-list" id="services"></div>
+    </div>
+  </section>
+
+  <!-- 7. Gaplashamiz -->
+  <section class="talk dark" id="talk">
+    <div class="wrap">
+      <h2 class="talk-title" data-t="talkA">GAPLASHAMIZ</h2>
+      <p class="talk-sub" data-t="talkSub"></p>
+      <div class="talk-links">
+        <a class="pill" href="https://t.me/valililloh_kh" target="_blank" rel="noopener" data-ev="ct:telegram">Telegram</a>
+        <a class="pill" href="https://instagram.com/valililloh_kh" target="_blank" rel="noopener" data-ev="ch:instagram">Instagram</a>
+        <a class="pill" href="https://github.com/valililloh" target="_blank" rel="noopener" data-ev="ct:github">GitHub</a>
+        <a class="pill solid" href="mailto:vkholmirzaev@gmail.com" data-ev="ct:email">vkholmirzaev@gmail.com</a>
+      </div>
+
+      <div class="talk-grid">
+        <form id="msgform" class="form" novalidate>
+          <h3 data-t="msgTitle">Xabar qoldiring</h3>
+          <p class="muted" data-t="msgText"></p>
+          <div><label for="f-name" data-t="fName">Ismingiz</label><input id="f-name" name="name" required maxlength="80" autocomplete="name"></div>
+          <div><label for="f-contact" data-t="fContact">Telegram yoki telefon</label><input id="f-contact" name="contact" required maxlength="80" data-ph="fContactPh"></div>
+          <div><label for="f-msg" data-t="fMsg">Xabar</label><textarea id="f-msg" name="message" required maxlength="2000" data-ph="fMsgPh"></textarea></div>
+          <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <button class="btn" type="submit" data-t="send">Yuborish</button>
+          <div class="status-msg" id="status" role="status"></div>
+        </form>
+
+        <div class="channels">
+          <h3 data-t="channelsTitle">Kanallarim</h3>
+          <a class="ch" href="https://t.me/kholmirzaev_kundaligi" target="_blank" rel="noopener" data-ev="ch:kundalik"><b>Kholmirzaev kundaligi</b><span data-t="chKundalik"></span><i aria-hidden="true">↗</i></a>
+          <a class="ch" href="https://t.me/lkhvs1" target="_blank" rel="noopener" data-ev="ch:songs"><b data-t="chSongsTitle">Qo'shiqlarim</b><span data-t="chSongs"></span><i aria-hidden="true">↗</i></a>
+          <a class="ch" href="https://t.me/xolmirzayev_v" target="_blank" rel="noopener" data-ev="ch:portfolio"><b>Motion portfolio</b><span data-t="chPortfolio"></span><i aria-hidden="true">↗</i></a>
+          <a class="ch" href="https://instagram.com/valililloh_kh" target="_blank" rel="noopener" data-ev="ch:instagram"><b>Instagram</b><span data-t="chInsta"></span><i aria-hidden="true">↗</i></a>
+        </div>
+      </div>
+    </div>
+    <footer class="foot wrap">
+      <span>© <span id="yr"></span> Valililloh Kholmirzaev</span>
+      <span>kholmirzaev.uz</span>
+    </footer>
+  </section>
+</main>
 
 <script src="assets/content.js"></script>
 <script src="assets/app.js"></script>
+<script src="assets/fx.js"></script>
 </body>
 </html>

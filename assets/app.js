@@ -41,63 +41,77 @@
     return a;
   };
 
-  const renderApps = (lang, t) => {
-    const box = document.getElementById("apps");
-    box.replaceChildren(...APPS.map((app) => {
-      const card = el("article", "app");
-      const top = el("div", "app-top");
-      top.append(el("div", app.alt ? "app-icon alt" : "app-icon", app.icon));
-      const head = el("div");
-      head.append(el("h3", null, app.name[lang]), el("p", "tagline", app.tagline[lang]));
-      top.append(head);
+  const pad2 = (n) => String(n).padStart(2, "0");
 
+  /* Tanlangan ilovalar: chapda katta belgi (poster), o'ngda ma'lumot */
+  const renderApps = (lang, t) => {
+    const box = document.getElementById("appsList");
+    box.replaceChildren(...APPS.map((app, i) => {
+      const card = el("article", "app");
+      const poster = el("div", "app-poster");
+      poster.append(el("span", "glyph", app.icon), el("span", "store", "RuStore"), el("span", "num", pad2(i + 1)));
+      const info = el("div", "app-info");
       const list = el("ul");
       list.append(...app.features[lang].map((f) => el("li", null, f)));
-
       const btns = el("div", "btns");
-      btns.append(linkBtn("btn btn-main", app.download ? t.download : t.soon, app.download, `dl:${app.id}`));
-      if (app.source) btns.append(linkBtn("btn btn-ghost", t.source, app.source, `src:${app.id}`));
-
-      card.append(top, el("p", null, app.about[lang]), list, el("p", "note", app.note[lang]), btns);
+      btns.append(linkBtn("btn solid", app.download ? t.download + " ↗" : t.soon, app.download, `dl:${app.id}`));
+      if (app.source) btns.append(linkBtn("btn", t.source, app.source, `src:${app.id}`));
+      info.append(el("h3", null, app.name[lang]), el("p", "tagline", app.tagline[lang]), list, el("p", "note", app.note[lang]), btns);
+      card.append(poster, info);
       return card;
     }));
   };
 
   const BADGE = { open: ["badgeOpen", "open"], closed: ["badgeClosed", ""], wip: ["badgeWip", "wip"] };
+  const initials = (name) => name.replace(/[^A-Za-zА-Яа-я\s]/g, " ").split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
 
+  /* Ishlar: halqadagi kartalar + pastdagi batafsil ro'yxat */
   const renderProjects = (lang, t) => {
-    const box = document.getElementById("projects");
-    box.replaceChildren(...PROJECTS.map((p) => {
-      const card = el("article", "card");
+    const works = [
+      ...APPS.map((a) => ({ name: a.name[lang], art: a.icon, kind: "App" })),
+      ...PROJECTS.map((p) => ({ name: p.name[lang].split(" — ")[0], art: initials(p.name.en), kind: p.status === "wip" ? t.badgeWip : "Bot / Web" }))
+    ];
+    document.getElementById("ring").replaceChildren(...works.map((w, i) => {
+      const c = el("div", "ring-card");
+      const top = el("div", "rc-top");
+      top.append(el("span", null, pad2(i + 1)), el("span", null, w.kind));
+      c.append(top, el("div", "rc-art", w.art), el("h4", null, w.name));
+      return c;
+    }));
+
+    document.getElementById("projects").replaceChildren(...PROJECTS.map((p, i) => {
+      const card = el("article", "work rv");
       const [key, cls] = BADGE[p.status];
-      const badges = el("div", "badges");
-      badges.append(el("span", `badge ${cls}`.trim(), t[key]));
-      if (p.status === "wip") badges.prepend(el("span", "badge", t.badgeClosed));
-
-      const stack = el("div", "stack");
-      stack.append(...p.stack.map((s) => el("span", null, s)));
-
-      card.append(badges, el("h3", null, p.name[lang]), el("p", null, p.desc[lang]));
+      const meta = el("div", "meta");
+      if (p.status === "wip") meta.append(el("span", "badge", t.badgeClosed));
+      meta.append(el("span", `badge ${cls}`.trim(), t[key]), el("span", "stack", p.stack.join(" · ")));
+      card.append(el("span", "idx", pad2(i + 1)), el("h3", null, p.name[lang]), el("p", null, p.desc[lang]), meta);
       if (p.links) {
         const links = el("div", "links");
         links.append(...p.links.map((l) => linkBtn(null, `${l.label} ↗`, l.url, `gh:${l.label}`)));
         card.append(links);
       }
-      card.append(stack);
       return card;
     }));
   };
 
-  const renderMarquee = (t) => {
-    const box = document.getElementById("marquee");
-    const nodes = [];
-    for (let round = 0; round < 2; round += 1) {
-      t.marquee.forEach((item) => {
-        nodes.push(document.createTextNode(item));
-        nodes.push(el("i", null, "✦"));
-      });
-    }
-    box.replaceChildren(...nodes);
+  const renderPath = (t) => {
+    const track = el("div", "roles-track");
+    for (let round = 0; round < 2; round += 1) t.roles.forEach((r) => track.append(el("span", null, r)));
+    document.getElementById("roles").replaceChildren(track);
+    document.getElementById("timeline").replaceChildren(...t.path.map((s) => {
+      const li = el("li");
+      li.append(el("span", "when", s.when), el("b", null, s.title), el("p", null, s.text));
+      return li;
+    }));
+  };
+
+  const renderServices = (t) => {
+    document.getElementById("services").replaceChildren(...t.services.map((s) => {
+      const row = el("div", "svc rv");
+      row.append(el("h3", null, s.title), el("p", null, s.text));
+      return row;
+    }));
   };
 
   let current = "uz";
@@ -122,12 +136,14 @@
     document.querySelectorAll("[data-lang]").forEach((b) => {
       b.setAttribute("aria-pressed", String(b.dataset.lang === lang));
     });
-    renderMarquee(t);
     renderApps(lang, t);
     renderProjects(lang, t);
+    renderPath(t);
+    renderServices(t);
     const st = document.getElementById("status");
     st.textContent = "";
-    st.className = "status";
+    st.className = "status-msg";
+    document.dispatchEvent(new CustomEvent("site:rendered", { detail: { lang } }));
   };
 
   document.querySelectorAll("[data-lang]").forEach((b) => {
@@ -142,7 +158,7 @@
   const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
   const effectiveTheme = () => root.getAttribute("data-theme") || (darkQuery.matches ? "dark" : "light");
   const syncThemeColor = () => {
-    const color = effectiveTheme() === "dark" ? "#0c0c10" : "#f6f5f0";
+    const color = effectiveTheme() === "dark" ? "#0a0a0a" : "#efede8";
     document.querySelectorAll('meta[name="theme-color"]').forEach((m) => {
       m.removeAttribute("media");
       m.setAttribute("content", color);
@@ -210,7 +226,7 @@
   const form = document.getElementById("msgform");
   const status = document.getElementById("status");
   const show = (cls, key) => {
-    status.className = `status ${cls}`;
+    status.className = `status-msg ${cls}`;
     status.textContent = UI[current][key];
   };
 

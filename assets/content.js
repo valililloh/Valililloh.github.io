@@ -251,3 +251,85 @@ window.PROJECTS = [
     }
   }
 ];
+
+/* Yangi dizayn matnlari (bosh sahifa, men haqimda, yo'l, xizmatlar, gaplashamiz) */
+(() => {
+  const MORE = {
+    uz: {
+      heroA: "ISHLARIMNI", heroB: "KO'RING",
+      heroSide: "Ilovalar, Telegram botlar va AI avtomatlashtirish. Odamlarning kundalik muammosini yechadigan narsalar.",
+      scroll: "Pastga suring",
+      aboutTitle: "MEN HAQIMDA",
+      aboutText: "Men Valililloh — ilova va Telegram bot dasturchisiman. Oddiy, tez va foydali narsalar yarataman: muhojirlar uchun imtihon ilovasi, ishlab chiqarish uchun kalkulyator, Telegram kanallarni AI bilan boshqaradigan platforma.",
+      aboutNote: "Kod · Avtomatlashtirish · Dizayn",
+      pathTitleA: "QAYERDA", pathTitleB: "BO'LGANMAN",
+      pathSub: "Dizayndan dasturlashgacha bo'lgan yo'lim.",
+      roles: ["ILOVA DASTURCHISI", "TELEGRAM BOTLAR", "AI AVTOMATLASHTIRISH"],
+      path: [
+        { when: "Avval", title: "Motion dizayn", text: "Toshkentda After Effects o'rgandim: tracking va VFX, 3D, 2D animatsiya." },
+        { when: "2025", title: "Kanal va avtomatlashtirish", text: "\"Kholmirzaev kundaligi\" kitob kanalini ochdim, uni n8n va Claude bilan avtomatlashtirdim." },
+        { when: "2026", title: "Ilovalar va botlar", text: "Patent imtihoni va Kub hisoblagich ilovalari RuStore'da. Telegram botlar va AI platforma." }
+      ],
+      featTitle: "TANLANGAN ILOVALAR",
+      worksTitle: "ISHLAR '26", worksSub: "Botlar, servislar va platformalar",
+      servicesTitle: "NIMA QILIB BERAMAN",
+      services: [
+        { title: "Telegram botlar", text: "Buyurtma, to'lov, obuna va admin panelli botlar. Kanal va guruhlar uchun avtomatlar." },
+        { title: "Avtomatlashtirish", text: "n8n va AI (Claude, OpenAI) bilan takrorlanuvchi ishlarni avtomatik bajaradigan tizimlar." },
+        { title: "Ilovalar va saytlar", text: "Android ilovalar, landing sahifalar, statistika va admin panellar." }
+      ],
+      talkA: "GAPLASHAMIZ", talkSub: "Loyiha, savol yoki taklif bo'lsa, yozing."
+    },
+    ru: {
+      heroA: "СМОТРИТЕ", heroB: "МОИ РАБОТЫ",
+      heroSide: "Приложения, Telegram-боты и AI-автоматизация. Вещи, которые решают повседневные задачи людей.",
+      scroll: "Листайте вниз",
+      aboutTitle: "ОБО МНЕ",
+      aboutText: "Я Валилиллох — разработчик приложений и Telegram-ботов. Делаю простые, быстрые и полезные вещи: приложение для экзамена мигрантов, калькулятор для производства, платформу, которая ведёт Telegram-каналы с помощью AI.",
+      aboutNote: "Код · Автоматизация · Дизайн",
+      pathTitleA: "ГДЕ Я", pathTitleB: "БЫЛ",
+      pathSub: "Мой путь от дизайна к разработке.",
+      roles: ["РАЗРАБОТЧИК ПРИЛОЖЕНИЙ", "TELEGRAM-БОТЫ", "AI-АВТОМАТИЗАЦИЯ"],
+      path: [
+        { when: "Ранее", title: "Моушн-дизайн", text: "Изучал After Effects в Ташкенте: трекинг и VFX, 3D, 2D-анимация." },
+        { when: "2025", title: "Канал и автоматизация", text: "Запустил книжный канал «Kholmirzaev kundaligi» и автоматизировал его с n8n и Claude." },
+        { when: "2026", title: "Приложения и боты", text: "Приложения «Экзамен на патент» и «Расчёт кубатуры» в RuStore. Telegram-боты и AI-платформа." }
+      ],
+      featTitle: "ИЗБРАННЫЕ ПРИЛОЖЕНИЯ",
+      worksTitle: "РАБОТЫ '26", worksSub: "Боты, сервисы и платформы",
+      servicesTitle: "ЧТО Я ДЕЛАЮ",
+      services: [
+        { title: "Telegram-боты", text: "Боты с заказами, оплатой, подписками и админ-панелью. Автоматизация каналов и групп." },
+        { title: "Автоматизация", text: "Системы на n8n и AI (Claude, OpenAI), которые выполняют повторяющуюся работу за вас." },
+        { title: "Приложения и сайты", text: "Android-приложения, лендинги, статистика и админ-панели." }
+      ],
+      talkA: "ДАВАЙТЕ ОБСУДИМ", talkSub: "Есть проект, вопрос или предложение — пишите."
+    },
+    en: {
+      heroA: "EXPLORE MY", heroB: "PORTFOLIO",
+      heroSide: "Apps, Telegram bots and AI automation. Things that solve people's everyday problems.",
+      scroll: "Scroll down",
+      aboutTitle: "ABOUT ME",
+      aboutText: "I'm Valililloh, an app and Telegram bot developer. I build simple, fast and useful things: an exam prep app for migrant workers, a calculator for production, a platform that runs Telegram channels with AI.",
+      aboutNote: "Code · Automation · Design",
+      pathTitleA: "WHERE", pathTitleB: "I'VE BEEN",
+      pathSub: "My path from design to development.",
+      roles: ["APP DEVELOPER", "TELEGRAM BOTS", "AI AUTOMATION"],
+      path: [
+        { when: "Before", title: "Motion design", text: "Studied After Effects in Tashkent: tracking and VFX, 3D, 2D animation." },
+        { when: "2025", title: "Channel and automation", text: "Started the \"Kholmirzaev kundaligi\" book channel and automated it with n8n and Claude." },
+        { when: "2026", title: "Apps and bots", text: "Patent Exam and Lumber Volume Calculator apps on RuStore. Telegram bots and an AI platform." }
+      ],
+      featTitle: "FEATURED APPS",
+      worksTitle: "WORKS '26", worksSub: "Bots, services and platforms",
+      servicesTitle: "WHAT I DO",
+      services: [
+        { title: "Telegram bots", text: "Bots with orders, payments, subscriptions and an admin panel. Automation for channels and groups." },
+        { title: "Automation", text: "Systems on n8n and AI (Claude, OpenAI) that do repetitive work for you." },
+        { title: "Apps and websites", text: "Android apps, landing pages, statistics and admin panels." }
+      ],
+      talkA: "LET'S TALK", talkSub: "Have a project, a question or an offer? Write to me."
+    }
+  };
+  Object.keys(MORE).forEach((l) => Object.assign(window.UI[l], MORE[l]));
+})();
