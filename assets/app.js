@@ -122,6 +122,8 @@
     document.querySelectorAll("[data-lang]").forEach((b) => {
       b.setAttribute("aria-pressed", String(b.dataset.lang === lang));
     });
+    const cvp = document.getElementById("cvp-link");
+    if (cvp) cvp.href = "/defense-access.html?lang=" + lang;
     renderMarquee(t);
     renderApps(lang, t);
     renderProjects(lang, t);
