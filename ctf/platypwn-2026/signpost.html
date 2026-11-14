@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Signpost — Platypwn 2026 | kholmirzaev.uz</title>
+<meta name="description" content="Platypwn 2026 CTF writeup: Signpost (OSINT).">
+<link rel="canonical" href="https://kholmirzaev.uz/ctf/platypwn-2026/signpost.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Signpost — Platypwn 2026">
+<meta property="og:description" content="Platypwn 2026 CTF writeup: Signpost (OSINT).">
+<meta property="og:url" content="https://kholmirzaev.uz/ctf/platypwn-2026/signpost.html">
+<meta property="og:image" content="https://kholmirzaev.uz/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<script>try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/writeup.css">
+</head>
+<body>
+<nav><div class="wrap"><a href="/" class="logo" data-keep>kholmirzaev<span>.uz</span></a><div class="nav-right"><div class="lang" role="group" aria-label="Language"><button type="button" data-lang="uz">UZ</button><button type="button" data-lang="ru">RU</button><button type="button" data-lang="en">EN</button></div></div></div></nav>
+<main class="story">
+<div class="story-nav"><a href="./" data-keep>← <span data-k="all">Barcha writeup'lar</span></a><small>Platypwn 2026 · OSINT</small></div>
+<div class="story-hero"><div class="eyebrow">Platypwn 2026 · OSINT</div><h1>Signpost</h1></div>
+<div data-l="uz"><article class="md" lang="uz"><h1>Signpost (OSINT)</h1>
+<h2>Topshiriq</h2>
+<blockquote>
+<p>This year's hiking adventure was amazing. Where was this photo taken?</p>
+</blockquote>
+<p>Toshli tog' yonbag'ri tasvirlangan rasm berilgan: sariq yo'l ko'rsatkich, ibodat bayroqlari va ko'plab toshdan terilgan uyumlar (cairn). Javob xaritadagi joyni bosish orqali yuboriladi (daqiqasiga 3 ta urinish bilan cheklangan).</p>
+<h2>1-qadam: Metama'lumotlar</h2>
+<p>EXIF ma'lumotlarida faqat kamera (iPhone 15 Pro) va sana bor edi. GPS koordinatalari yo'q, demak joyni rasmning o'zidan topish kerak edi.</p>
+<h2>2-qadam: Belgilarni o'qish</h2>
+<p>Rasmni to'liq o'lchamda kattalashtirib:</p>
+<ul>
+<li>Sariq strelkada <strong>"Dresdner Hütte"</strong> deb yozilgan. Bunday uslubdagi sariq belgilarni Avstriya va Germaniya Alp klublari ishlatadi.</li>
+<li>Tepasidagi kichik oq belgida <strong>taxminan 2670 m balandlik</strong> ko'rsatilgan.</li>
+</ul>
+<p>Dresdner Hütte — <strong>Avstriyaning Tirol viloyatidagi Stubay Alp tog'larida</strong>, Stubay muzligi kanat yo'li yonidagi tog' kulbasi.</p>
+<h2>3-qadam: Xato</h2>
+<p>Birinchi urinishlarim kulbaning o'zi va atrofida edi. Hammasi rad etildi. Google Maps'dagi rasmlar bilan solishtirish ishonarli ko'rinardi, lekin raqamlar to'g'ri kelmasdi: kulba <strong>2308 m</strong> balandlikda, yo'l ko'rsatkichda esa taxminan <strong>2670 m</strong>. Bundan tashqari, Dresdner Hütte <em>tomon</em> ko'rsatayotgan strelka rasm undan <em>uzoqda</em> olinganini bildiradi.</p>
+<h2>4-qadam: Tosh uyumli dovon</h2>
+<p>Stubaier Höhenweg so'qmog'i Dresdner Hütte'dan dovon orqali Sulzenauhütte'ga boradi. Sayohat qo'llanmalarida bu dovon, <strong>Peiljoch / Beiljoch (2672 m)</strong>, <strong>o'nlab Steinmänner (tosh uyumlari)</strong> bilan mashhur deb yozilgan. Bu ham balandlikka, ham rasmga mos keladi.</p>
+<p>Joy tanlagichning OpenStreetMap qatlamida dovon <strong>"Beiljoch 2672 m"</strong> deb belgilangan, kulbadan taxminan 1,3 km janubi-sharqda. Pinni dovon belgisiga qo'yganimda javob qabul qilindi.</p>
+<h2>Flag</h2>
+<p><code>PP{any0ne-w4nts-to-h1k3-n0w?::o74u9iB3au18}</code></p>
+<h2>Xulosa</h2>
+<p>O'qiy olgan birinchi nomda to'xtab qolmang. Yo'l ko'rsatkichdagi manzil sizning qayerda <em>emasligingizni</em> bildiradi. Balandlik kabi kichik tafsilotlar ko'pincha hal qiluvchi dalil bo'ladi.</p></article></div><div data-l="ru" hidden><article class="md" lang="ru"><h1>Signpost (OSINT)</h1>
+<h2>Задание</h2>
+<blockquote>
+<p>This year's hiking adventure was amazing. Where was this photo taken?</p>
+</blockquote>
+<p>Дана фотография каменистого горного склона с жёлтым указателем, молитвенными флажками и множеством каменных пирамидок (туров). Ответ отправляется кликом по карте в выборе места (не больше 3 попыток в минуту).</p>
+<h2>Шаг 1: Метаданные</h2>
+<p>В EXIF были только камера (iPhone 15 Pro) и дата. GPS-координат нет, значит, место нужно было найти по самому снимку.</p>
+<h2>Шаг 2: Читаем знаки</h2>
+<p>Увеличив фото в полном разрешении:</p>
+<ul>
+<li>На жёлтой стрелке написано <strong>«Dresdner Hütte»</strong>. Жёлтые знаки такого стиля используют Альпийские клубы Австрии и Германии.</li>
+<li>На маленькой белой табличке над ней указана <strong>высота около 2670 м</strong>.</li>
+</ul>
+<p>Dresdner Hütte — горная хижина в <strong>Штубайских Альпах, Тироль, Австрия</strong>, рядом с канатной дорогой на Штубайский ледник.</p>
+<h2>Шаг 3: Ошибка</h2>
+<p>Первые попытки я делал у самой хижины и вокруг неё. Все были отклонены. Сравнение с фото из Google Maps выглядело убедительно, но цифры не сходились: хижина находится на <strong>2308 м</strong>, а указатель показывает около <strong>2670 м</strong>. К тому же стрелка, указывающая <em>на</em> Dresdner Hütte, означает, что снимок сделан <em>вдали</em> от неё.</p>
+<h2>Шаг 4: Перевал с турами</h2>
+<p>Тропа Stubaier Höhenweg идёт от Dresdner Hütte через перевал к Sulzenauhütte. В путеводителях этот перевал, <strong>Peiljoch / Beiljoch (2672 м)</strong>, описан как знаменитый своими <strong>десятками Steinmänner (каменных туров)</strong>. Это совпадает и с высотой, и со снимком.</p>
+<p>На слое OpenStreetMap в выборе места перевал отмечен как <strong>«Beiljoch 2672 m»</strong>, примерно в 1,3 км к юго-востоку от хижины. Метку на значке перевала приняли.</p>
+<h2>Флаг</h2>
+<p><code>PP{any0ne-w4nts-to-h1k3-n0w?::o74u9iB3au18}</code></p>
+<h2>Вывод</h2>
+<p>Не останавливайтесь на первом прочитанном названии. Пункт назначения на указателе говорит, где вы <em>не</em> находитесь. Мелкие детали вроде высоты часто оказываются решающей уликой.</p></article></div><div data-l="en" hidden><article class="md" lang="en"><h1>Signpost (OSINT)</h1>
+<h2>The challenge</h2>
+<blockquote>
+<p>This year's hiking adventure was amazing. Where was this photo taken?</p>
+</blockquote>
+<p>We get a photo of a rocky mountain slope with a yellow hiking signpost, prayer flags and many stacked stone cairns. The answer is submitted by clicking on a map in a location picker (rate-limited to 3 tries per minute).</p>
+<h2>Step 1: Metadata</h2>
+<p>The EXIF data showed only the camera (iPhone 15 Pro) and the date. No GPS coordinates, so the location had to come from the image itself.</p>
+<h2>Step 2: Reading the signs</h2>
+<p>Zooming into the full-resolution image:</p>
+<ul>
+<li>The yellow arrow says <strong>"Dresdner Hütte"</strong>. Yellow signs of this style are used by the Austrian/German Alpine clubs.</li>
+<li>The small white sign above it shows an <strong>altitude around 2670 m</strong>.</li>
+</ul>
+<p>Dresdner Hütte is a mountain hut in the <strong>Stubai Alps, Tyrol, Austria</strong>, next to the Stubai Glacier cable car.</p>
+<h2>Step 3: The mistake</h2>
+<p>My first attempts were at the hut itself and the area around it. All were rejected. Comparing with Google Maps photos looked convincing, but the numbers did not fit: the hut is at <strong>2308 m</strong>, while the signpost shows about <strong>2670 m</strong>. Also, an arrow pointing <em>to</em> Dresdner Hütte means the photo was taken <em>away</em> from it.</p>
+<h2>Step 4: The pass with the cairns</h2>
+<p>The Stubaier Höhenweg trail goes from Dresdner Hütte over a pass to Sulzenauhütte. Hiking guides describe that pass, the <strong>Peiljoch / Beiljoch (2672 m)</strong>, as famous for its <strong>dozens of Steinmänner (stone cairns)</strong>. That matches both the altitude and the photo.</p>
+<p>On the OpenStreetMap layer of the location picker the pass is marked as <strong>"Beiljoch 2672 m"</strong>, about 1.3 km south-east of the hut. Placing the pin on the pass symbol was accepted.</p>
+<h2>Flag</h2>
+<p><code>PP{any0ne-w4nts-to-h1k3-n0w?::o74u9iB3au18}</code></p>
+<h2>Takeaway</h2>
+<p>Don't stop at the first name you can read. The destination on a signpost tells you where you are <em>not</em>. Small details like altitude are often the decisive clue.</p></article></div>
+<div class="pager"><a href="diceware-warmup.html" data-keep>← <span data-k="prev">Oldingi</span>: Diceware (warmup)</a></div>
+</main>
+<footer><div class="wrap"><span>© <span id="year"></span> Valililloh Kholmirzaev</span><a href="/" data-keep>kholmirzaev.uz</a></div></footer>
+<script>
+(()=>{const L={"uz": {"home": "Bosh sahifa", "all": "Barcha writeup'lar", "prev": "Oldingi", "next": "Keyingi"}, "ru": {"home": "На главную", "all": "Все райтапы", "prev": "Назад", "next": "Далее"}, "en": {"home": "Home", "all": "All writeups", "prev": "Previous", "next": "Next"}},langs=['uz','ru','en'];let l=new URLSearchParams(location.search).get('lang');
+if(!langs.includes(l)){try{l=localStorage.getItem('lang')}catch(e){}}
+if(!langs.includes(l)){l=(navigator.language||'').slice(0,2);if(!langs.includes(l))l='uz'}
+const apply=(x,save)=>{document.documentElement.lang=x;
+document.querySelectorAll('[data-l]').forEach(e=>e.hidden=e.dataset.l!==x);
+document.querySelectorAll('[data-k]').forEach(e=>e.textContent=L[x][e.dataset.k]);
+document.querySelectorAll('[data-lang]').forEach(e=>e.setAttribute('aria-pressed',String(e.dataset.lang===x)));
+document.querySelectorAll('a[data-keep]').forEach(e=>{const u=new URL(e.getAttribute('href'),location.href);u.searchParams.set('lang',x);e.href=u.pathname+u.search+u.hash});
+if(save){try{localStorage.setItem('lang',x)}catch(e){}}};
+document.querySelectorAll('[data-lang]').forEach(b=>b.addEventListener('click',()=>apply(b.dataset.lang,true)));
+apply(l,false);const y=document.getElementById('year');if(y)y.textContent=new Date().getFullYear()})();
+</script>
+</body>
+</html>
