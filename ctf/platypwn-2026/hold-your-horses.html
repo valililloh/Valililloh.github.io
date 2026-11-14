@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hold Your Horses — Platypwn 2026 | kholmirzaev.uz</title>
+<meta name="description" content="Platypwn 2026 CTF writeup: Hold Your Horses (Web).">
+<link rel="canonical" href="https://kholmirzaev.uz/ctf/platypwn-2026/hold-your-horses.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hold Your Horses — Platypwn 2026">
+<meta property="og:description" content="Platypwn 2026 CTF writeup: Hold Your Horses (Web).">
+<meta property="og:url" content="https://kholmirzaev.uz/ctf/platypwn-2026/hold-your-horses.html">
+<meta property="og:image" content="https://kholmirzaev.uz/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<script>try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/writeup.css">
+</head>
+<body>
+<nav><div class="wrap"><a href="/" class="logo" data-keep>kholmirzaev<span>.uz</span></a><div class="nav-right"><div class="lang" role="group" aria-label="Language"><button type="button" data-lang="uz">UZ</button><button type="button" data-lang="ru">RU</button><button type="button" data-lang="en">EN</button></div></div></div></nav>
+<main class="story">
+<div class="story-nav"><a href="./" data-keep>← <span data-k="all">Barcha writeup'lar</span></a><small>Platypwn 2026 · Web</small></div>
+<div class="story-hero"><div class="eyebrow">Platypwn 2026 · Web</div><h1>Hold Your Horses</h1><div data-l="uz"><p>Writeup ingliz tilida yozilgan.</p></div><div data-l="ru" hidden><p>Райтап написан на английском.</p></div><div data-l="en" hidden><p>The writeup is in English.</p></div></div>
+<article class="md" lang="en">
+<h1>Hold Your Horses (Web)</h1>
+<h2>The challenge</h2>
+<p>A horse racing betting site written in Rust (axum). We start with <strong>10 points</strong> and the <code>/api/state</code> endpoint shows the flag in the <code>vip</code> field once we reach <strong>500 points</strong>. Source code was provided.</p>
+<h2>How the game works</h2>
+<ul>
+<li>A background loop ticks once per second.</li>
+<li><code>timer</code> 0–29: betting is open. At <code>timer == 30</code> one random horse becomes the "favorite" and runs twice as fast.</li>
+<li>Every tick each horse moves forward by a random amount. The race ends when a horse reaches 100.</li>
+<li>A winning bet pays <code>amount * 2</code>.</li>
+</ul>
+<p>To go from 10 to 500 points we need to win <strong>6 races in a row</strong> (10 → 20 → 40 → 80 → 160 → 320 → 640). Guessing is hopeless with 16 horses.</p>
+<h2>The bug</h2>
+<p>The bet endpoint is protected by a middleware:</p>
+<pre><code class="language-rust">async fn betting_open(State(state): State&lt;SharedState&gt;, request: Request, next: Next) -&gt; ... {
+    if state.read().await.timer &gt;= 30 {
+        return Err((StatusCode::BAD_REQUEST, &quot;Race already started&quot;.to_string()));
+    }
+    Ok(next.run(request).await)
+}
+</code></pre>
+<p>The handler takes the bet as <code>Json&lt;BetRequest&gt;</code>. In axum the middleware runs as soon as the <strong>request headers</strong> arrive, but the JSON body is only read later, when the handler's extractor runs.</p>
+<p>So the check "is betting open?" happens at header time, while the bet itself (which horse, how much) is decided at body time. If we send the headers while betting is open and <strong>hold the body back</strong>, we can wait until the race is almost over and then choose the horse that is clearly winning. The title is the hint: hold your horses (bytes).</p>
+<h2>Exploit</h2>
+<ol>
+<li>Poll <code>GET /api/state</code> once per second.</li>
+<li>When <code>timer</code> is between 25 and 28, open a raw TCP connection and send only the headers of <code>POST /api/bet</code> with a fixed <code>Content-Length</code>.</li>
+<li>Keep watching the race. When the leading horse reaches about 85, send the body: <code>{"horse": &lt;leader&gt;, "amount": &lt;all points&gt;}</code>.</li>
+<li>Since the body length must match <code>Content-Length</code> exactly, the JSON is padded with spaces (JSON allows whitespace).</li>
+<li>Repeat for 6 races, then read the flag from <code>vip</code>.</li>
+</ol>
+<p>Core idea in Python:</p>
+<pre><code class="language-python">s = socket.create_connection((HOST, PORT))
+s.sendall(b&quot;POST /api/bet HTTP/1.1\r\nHost: x\r\n&quot;
+          b&quot;Content-Type: application/json\r\n&quot;
+          b&quot;Content-Length: 64\r\n\r\n&quot;)   # betting is still open here
+# ... wait until the leader is close to the finish line ...
+body = json.dumps({&quot;horse&quot;: leader, &quot;amount&quot;: points}).ljust(64).encode()
+s.sendall(body)                              # bet decided now
+</code></pre>
+<p>All 6 bets won: 10 → 20 → 40 → 80 → 160 → 320 → 640 points, and the <code>vip</code> field returned the flag. Requests were kept to about one per second.</p>
+<h2>Flag</h2>
+<p><code>PP{h0ld_y0ur_byt3s_n0t_y0ur_h0rs3s::e8KHzo9mPTrc}</code></p>
+<h2>Takeaway</h2>
+<p>An authorization or state check in middleware is only valid for the moment it runs. If the decision depends on data that arrives later (the body), the check must happen where that data is used, inside the handler, under the same lock that applies the bet.</p>
+</article>
+<div class="pager"><span></span><a href="bish-bash-bosh.html" data-keep><span data-k="next">Keyingi</span>: Bish Bash Bosh →</a></div>
+</main>
+<footer><div class="wrap"><span>© <span id="year"></span> Valililloh Kholmirzaev</span><a href="/" data-keep>kholmirzaev.uz</a></div></footer>
+<script>
+(()=>{const L={"uz": {"home": "Bosh sahifa", "all": "Barcha writeup'lar", "prev": "Oldingi", "next": "Keyingi"}, "ru": {"home": "На главную", "all": "Все райтапы", "prev": "Назад", "next": "Далее"}, "en": {"home": "Home", "all": "All writeups", "prev": "Previous", "next": "Next"}},langs=['uz','ru','en'];let l=new URLSearchParams(location.search).get('lang');
+if(!langs.includes(l)){try{l=localStorage.getItem('lang')}catch(e){}}
+if(!langs.includes(l)){l=(navigator.language||'').slice(0,2);if(!langs.includes(l))l='uz'}
+const apply=(x,save)=>{document.documentElement.lang=x;
+document.querySelectorAll('[data-l]').forEach(e=>e.hidden=e.dataset.l!==x);
+document.querySelectorAll('[data-k]').forEach(e=>e.textContent=L[x][e.dataset.k]);
+document.querySelectorAll('[data-lang]').forEach(e=>e.setAttribute('aria-pressed',String(e.dataset.lang===x)));
+document.querySelectorAll('a[data-keep]').forEach(e=>{const u=new URL(e.getAttribute('href'),location.href);u.searchParams.set('lang',x);e.href=u.pathname+u.search+u.hash});
+if(save){try{localStorage.setItem('lang',x)}catch(e){}}};
+document.querySelectorAll('[data-lang]').forEach(b=>b.addEventListener('click',()=>apply(b.dataset.lang,true)));
+apply(l,false);const y=document.getElementById('year');if(y)y.textContent=new Date().getFullYear()})();
+</script>
+</body>
+</html>

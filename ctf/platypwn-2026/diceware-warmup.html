@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diceware (warmup) — Platypwn 2026 | kholmirzaev.uz</title>
+<meta name="description" content="Platypwn 2026 CTF writeup: Diceware (warmup) (Crypto).">
+<link rel="canonical" href="https://kholmirzaev.uz/ctf/platypwn-2026/diceware-warmup.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Diceware (warmup) — Platypwn 2026">
+<meta property="og:description" content="Platypwn 2026 CTF writeup: Diceware (warmup) (Crypto).">
+<meta property="og:url" content="https://kholmirzaev.uz/ctf/platypwn-2026/diceware-warmup.html">
+<meta property="og:image" content="https://kholmirzaev.uz/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<script>try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/writeup.css">
+</head>
+<body>
+<nav><div class="wrap"><a href="/" class="logo" data-keep>kholmirzaev<span>.uz</span></a><div class="nav-right"><div class="lang" role="group" aria-label="Language"><button type="button" data-lang="uz">UZ</button><button type="button" data-lang="ru">RU</button><button type="button" data-lang="en">EN</button></div></div></div></nav>
+<main class="story">
+<div class="story-nav"><a href="./" data-keep>← <span data-k="all">Barcha writeup'lar</span></a><small>Platypwn 2026 · Crypto</small></div>
+<div class="story-hero"><div class="eyebrow">Platypwn 2026 · Crypto</div><h1>Diceware (warmup)</h1><div data-l="uz"><p>Writeup o&#x27;zbek tilida yozilgan.</p></div><div data-l="ru" hidden><p>Райтап написан на узбекском.</p></div><div data-l="en" hidden><p>The writeup is in Uzbek.</p></div></div>
+<article class="md" lang="uz">
+<h1>Platypwn CTF 2026 — Diceware (Warmup) Write-up</h1>
+<p><strong>Kategoriya:</strong> Cryptography / Web<br />
+<strong>Bosqich:</strong> Warmup (1-flag)<br />
+<strong>Holat:</strong> Yechilgan va CTF platformasida qabul qilingan<br />
+<strong>Flag:</strong> <code>PP{yOu_4r3_7h3_5rv3r_n0w::ycF1hSK_GsIN}</code></p>
+<h2>Topshiriq</h2>
+<p><code>crypto.diceware.zip</code> arxivi berildi. Unda Python/Flask asosidagi parol menejeri, Rust tilida yozilgan PIR (Private Information Retrieval) moduli va wordlist serverining kodlari bor edi. Maqsadimiz <code>Warmup User</code> hisobiga kirib, uning ichidagi <strong>warmup flag</strong> yozuvini olish edi.</p>
+<p>Bu topshiriqda OSINT rasmi bo‘lmagan: asosiy dalillar ZIP ichidagi manba kodlari va ishga tushirilgan CTF xizmati edi.</p>
+<h2>Foydalanilgan vositalar</h2>
+<ul>
+<li><strong>ZIP arxivi va manba kodlari:</strong> <code>web/app/app.py</code>, <code>web/app/diceware.py</code>, <code>inspire/src/pir.rs</code>, <code>wordlist_server/src/main.rs</code></li>
+<li><strong>Termux</strong> — telefondan terminalga ulanish</li>
+<li><strong>Ubuntu VPS + WireGuard</strong> — CTF tarmog‘iga ulanish</li>
+<li><strong>Python 3</strong> — PIR javob serveri va avtomatlashtirilgan sinov</li>
+<li><strong>HTTP so‘rovlari</strong> — parolni qayta o‘rnatish va login tekshiruvi</li>
+</ul>
+<h2>Yechim jarayoni</h2>
+<h3>1. Koddan zaif nuqtani topish</h3>
+<p><code>web/app/app.py</code> ichida <code>POST /reset_password</code> endpointi bor edi. U <code>username</code> va <code>wordlist</code> qiymatlarini qabul qilib, yangi parolni quyidagicha hosil qilardi:</p>
+<pre><code class="language-python">new_password = generate_password(
+    CLIENT_USERS,
+    str(request.form.get(&quot;wordlist&quot;, DEFAULT_WORDLIST))
+)
+</code></pre>
+<p><code>FlagUser</code> uchun parolni qayta o‘rnatish taqiqlangan, ammo <code>Warmup User</code> uchun mumkin edi.</p>
+<p><code>web/app/diceware.py</code> esa so‘rovda berilgan <code>wordlist</code> manziliga <strong>POST</strong> yuborib, kelgan PIR javobini parol so‘ziga aylantirardi. Eng muhim kamchilik: <code>wordlist</code> URL foydalanuvchi tomonidan nazorat qilinardi; xizmat esa unga kelgan kriptografik javobga ishonardi.</p>
+<h3>2. PIR javobini boshqarish</h3>
+<p>Oddiy matn ko‘rinishidagi <code>pebble</code> javobi yetarli emas edi. Server to‘g‘ri <code>Content-Type</code> va <strong>PIR formatidagi shifrlangan javob</strong> kutardi.</p>
+<p>Shu sabab <code>diceware_pir_solution.py</code> skripti yaratildi. U kelgan PIR so‘rovidan Paillier ochiq kalitining modulini (<code>n</code>) ajratib, <code>pebble</code> so‘zini kodlaydigan mos shifrlangan javob tayyorlardi. Javob Rust klienti kutadigan <code>postcard</code> formatiga keltirildi.</p>
+<p>Skript ikki rejimda ishlardi:</p>
+<pre><code class="language-bash">python3 diceware_pir_solution.py serve --word pebble --port 9000
+</code></pre>
+<p>Keyin ikkinchi terminalda CTF'ning o‘sha vaqtdagi xizmati uchun:</p>
+<pre><code class="language-bash">python3 diceware_pir_solution.py solve \
+  --base http://10.83.9.64:8081 \
+  --callback http://10.82.1.33:9000/ \
+  --word pebble
+</code></pre>
+<p><strong>Izoh:</strong> IP manzillar CTF sessiyasiga tegishli edi; keyinchalik o‘zgarishi mumkin.</p>
+<h3>3. Parolni oldindan bilish</h3>
+<p><code>generate_password()</code> har bir parolni <strong>6 ta so‘zdan</strong> tuzardi. Bizning soxta PIR server har bir wordlist so‘roviga bir xil so‘z — <code>pebble</code> — ni qaytaradigan qilib yozildi.</p>
+<p>Natijada yangi parol oldindan ma’lum bo‘ldi:</p>
+<pre><code class="language-text">pebble pebble pebble pebble pebble pebble
+</code></pre>
+<p>Jarayonda oltita PIR so‘rovi qayta ishlangani kuzatildi. So‘ng skript <code>Warmup User</code> nomidan login qilib, akkauntdagi yozuvlarni o‘qidi.</p>
+<h3>4. Flagni olish va tasdiqlash</h3>
+<p>Login muvaffaqiyatli bo‘lgach, parol menejeridagi <strong>warmup flag</strong> yozuvi ochildi va quyidagi flag topildi:</p>
+<pre><code class="language-text">PP{yOu_4r3_7h3_5rv3r_n0w::ycF1hSK_GsIN}
+</code></pre>
+<p>Flag <code>PP{...}</code> formatida CTF platformasiga yuborildi. Dastlabki urinishda qabul qilinmagan holat bo‘lgan, ammo keyingi yuborishda platforma <strong>“Nice! Flag accepted!”</strong> deb tasdiqladi.</p>
+<h2>Zaiflikning sababi</h2>
+<p>Bu yerda oddiy parol taxmin qilish usuli ishlatilmadi. Muammo <strong>ishonchsiz <code>wordlist</code> URL va autentifikatsiyalanmagan PIR javobi</strong> edi. Ilova kriptografik javobning tuzilishini tekshirardi, lekin u albatta ishonchli wordlist serveridan kelganini kafolatlamasdi. Shuning uchun parol yaratish jarayonidagi so‘zlarni nazorat qilish mumkin bo‘ldi.</p>
+<h2>Xulosa</h2>
+<p><code>Diceware</code> topshirig‘ida birinchi — <strong>Warmup</strong> — flag olindi. Arxivdagi kodni o‘rganish, Python orqali mos PIR javobini yaratish va VPN orqali CTF muhitida sinash yechimga olib keldi.</p>
+<p><strong>Muhim:</strong> bu write-up faqat topilgan birinchi flagga tegishli. <code>User</code> va <code>Admin</code> flaglari ushbu sinovda topilmagan.</p>
+</article>
+<div class="pager"><a href="bish-bash-bosh.html" data-keep>← <span data-k="prev">Oldingi</span>: Bish Bash Bosh</a><a href="signpost.html" data-keep><span data-k="next">Keyingi</span>: Signpost →</a></div>
+</main>
+<footer><div class="wrap"><span>© <span id="year"></span> Valililloh Kholmirzaev</span><a href="/" data-keep>kholmirzaev.uz</a></div></footer>
+<script>
+(()=>{const L={"uz": {"home": "Bosh sahifa", "all": "Barcha writeup'lar", "prev": "Oldingi", "next": "Keyingi"}, "ru": {"home": "На главную", "all": "Все райтапы", "prev": "Назад", "next": "Далее"}, "en": {"home": "Home", "all": "All writeups", "prev": "Previous", "next": "Next"}},langs=['uz','ru','en'];let l=new URLSearchParams(location.search).get('lang');
+if(!langs.includes(l)){try{l=localStorage.getItem('lang')}catch(e){}}
+if(!langs.includes(l)){l=(navigator.language||'').slice(0,2);if(!langs.includes(l))l='uz'}
+const apply=(x,save)=>{document.documentElement.lang=x;
+document.querySelectorAll('[data-l]').forEach(e=>e.hidden=e.dataset.l!==x);
+document.querySelectorAll('[data-k]').forEach(e=>e.textContent=L[x][e.dataset.k]);
+document.querySelectorAll('[data-lang]').forEach(e=>e.setAttribute('aria-pressed',String(e.dataset.lang===x)));
+document.querySelectorAll('a[data-keep]').forEach(e=>{const u=new URL(e.getAttribute('href'),location.href);u.searchParams.set('lang',x);e.href=u.pathname+u.search+u.hash});
+if(save){try{localStorage.setItem('lang',x)}catch(e){}}};
+document.querySelectorAll('[data-lang]').forEach(b=>b.addEventListener('click',()=>apply(b.dataset.lang,true)));
+apply(l,false);const y=document.getElementById('year');if(y)y.textContent=new Date().getFullYear()})();
+</script>
+</body>
+</html>
