@@ -25,9 +25,94 @@
 <nav><div class="wrap"><a href="/" class="logo" data-keep>kholmirzaev<span>.uz</span></a><div class="nav-right"><div class="lang" role="group" aria-label="Language"><button type="button" data-lang="uz">UZ</button><button type="button" data-lang="ru">RU</button><button type="button" data-lang="en">EN</button></div></div></div></nav>
 <main class="story">
 <div class="story-nav"><a href="./" data-keep>← <span data-k="all">Barcha writeup'lar</span></a><small>Platypwn 2026 · Web</small></div>
-<div class="story-hero"><div class="eyebrow">Platypwn 2026 · Web</div><h1>Hold Your Horses</h1><div data-l="uz"><p>Writeup ingliz tilida yozilgan.</p></div><div data-l="ru" hidden><p>Райтап написан на английском.</p></div><div data-l="en" hidden><p>The writeup is in English.</p></div></div>
-<article class="md" lang="en">
-<h1>Hold Your Horses (Web)</h1>
+<div class="story-hero"><div class="eyebrow">Platypwn 2026 · Web</div><h1>Hold Your Horses</h1></div>
+<div data-l="uz"><article class="md" lang="uz"><h1>Hold Your Horses (Web)</h1>
+<h2>Topshiriq</h2>
+<p>Rust (axum) tilida yozilgan ot poygasiga pul tikish sayti. Boshida <strong>10 ochko</strong> beriladi, <strong>500 ochkoga</strong> yetganda <code>/api/state</code> endpointi <code>vip</code> maydonida flagni ko'rsatadi. Manba kodi berilgan.</p>
+<h2>O'yin qanday ishlaydi</h2>
+<ul>
+<li>Fondagi sikl har soniyada bir marta ishlaydi.</li>
+<li><code>timer</code> 0–29: pul tikish ochiq. <code>timer == 30</code> bo'lganda tasodifiy bitta ot "favorit" bo'ladi va ikki barobar tez yuguradi.</li>
+<li>Har soniyada har bir ot tasodifiy masofaga oldinga siljiydi. Biror ot 100 ga yetganda poyga tugaydi.</li>
+<li>Yutgan tikish <code>amount * 2</code> to'laydi.</li>
+</ul>
+<p>10 dan 500 ochkoga chiqish uchun <strong>ketma-ket 6 ta poygada</strong> yutish kerak (10 → 20 → 40 → 80 → 160 → 320 → 640). 16 ta ot bo'lgani uchun taxmin qilib bunga erishib bo'lmaydi.</p>
+<h2>Zaiflik</h2>
+<p>Tikish endpointi middleware bilan himoyalangan:</p>
+<pre><code class="language-rust">async fn betting_open(State(state): State&lt;SharedState&gt;, request: Request, next: Next) -&gt; ... {
+    if state.read().await.timer &gt;= 30 {
+        return Err((StatusCode::BAD_REQUEST, &quot;Race already started&quot;.to_string()));
+    }
+    Ok(next.run(request).await)
+}
+</code></pre>
+<p>Handler tikishni <code>Json&lt;BetRequest&gt;</code> sifatida qabul qiladi. axum'da middleware so'rovning <strong>sarlavhalari (headers)</strong> kelishi bilan ishlaydi, JSON tanasi (body) esa keyinroq, handler'ning extractor'i ishlaganda o'qiladi.</p>
+<p>Demak "tikish ochiqmi?" tekshiruvi sarlavhalar kelganda bo'ladi, tikishning o'zi (qaysi ot, qancha) esa tana kelganda hal qilinadi. Agar sarlavhalarni tikish ochiq paytda yuborib, <strong>tanani ushlab tursak</strong>, poyga deyarli tugashini kutib, aniq yutayotgan otni tanlashimiz mumkin. Nomi ham shunga ishora: hold your horses (bytes), ya'ni "baytlaringizni ushlab turing".</p>
+<h2>Ekspluatatsiya</h2>
+<ol>
+<li>Har soniyada <code>GET /api/state</code> ni so'rab turamiz.</li>
+<li><code>timer</code> 25 va 28 orasida bo'lganda oddiy TCP ulanish ochib, <code>POST /api/bet</code> ning faqat sarlavhalarini aniq <code>Content-Length</code> bilan yuboramiz.</li>
+<li>Poygani kuzatishda davom etamiz. Oldingi ot taxminan 85 ga yetganda tanani yuboramiz: <code>{"horse": &lt;oldingi ot&gt;, "amount": &lt;barcha ochko&gt;}</code>.</li>
+<li>Tana uzunligi <code>Content-Length</code> ga aynan teng bo'lishi kerak, shuning uchun JSON bo'sh joylar bilan to'ldiriladi (JSON bo'sh joyga ruxsat beradi).</li>
+<li>6 ta poyga uchun takrorlaymiz, keyin <code>vip</code> dan flagni o'qiymiz.</li>
+</ol>
+<p>Python'dagi asosiy g'oya:</p>
+<pre><code class="language-python">s = socket.create_connection((HOST, PORT))
+s.sendall(b&quot;POST /api/bet HTTP/1.1\r\nHost: x\r\n&quot;
+          b&quot;Content-Type: application/json\r\n&quot;
+          b&quot;Content-Length: 64\r\n\r\n&quot;)   # betting is still open here
+# ... wait until the leader is close to the finish line ...
+body = json.dumps({&quot;horse&quot;: leader, &quot;amount&quot;: points}).ljust(64).encode()
+s.sendall(body)                              # bet decided now
+</code></pre>
+<p>6 ta tikishning hammasi yutdi: 10 → 20 → 40 → 80 → 160 → 320 → 640 ochko, <code>vip</code> maydoni flagni qaytardi. So'rovlar soniyasiga taxminan bittadan oshirilmadi.</p>
+<h2>Flag</h2>
+<p><code>PP{h0ld_y0ur_byt3s_n0t_y0ur_h0rs3s::e8KHzo9mPTrc}</code></p>
+<h2>Xulosa</h2>
+<p>Middleware'dagi ruxsat yoki holat tekshiruvi faqat u ishlagan lahzada to'g'ri bo'ladi. Agar qaror keyin keladigan ma'lumotga (tanaga) bog'liq bo'lsa, tekshiruv o'sha ma'lumot ishlatiladigan joyda, ya'ni handler ichida, tikishni qo'llaydigan qulf (lock) ostida bo'lishi kerak.</p></article></div><div data-l="ru" hidden><article class="md" lang="ru"><h1>Hold Your Horses (Web)</h1>
+<h2>Задание</h2>
+<p>Сайт ставок на скачки, написанный на Rust (axum). На старте даётся <strong>10 очков</strong>, а эндпоинт <code>/api/state</code> показывает флаг в поле <code>vip</code>, когда набирается <strong>500 очков</strong>. Исходный код был выдан.</p>
+<h2>Как работает игра</h2>
+<ul>
+<li>Фоновый цикл срабатывает раз в секунду.</li>
+<li><code>timer</code> 0–29: ставки открыты. При <code>timer == 30</code> одна случайная лошадь становится «фаворитом» и бежит в два раза быстрее.</li>
+<li>Каждую секунду каждая лошадь продвигается на случайное расстояние. Забег заканчивается, когда какая-то лошадь достигает 100.</li>
+<li>Выигравшая ставка платит <code>amount * 2</code>.</li>
+</ul>
+<p>Чтобы пройти от 10 до 500 очков, нужно выиграть <strong>6 забегов подряд</strong> (10 → 20 → 40 → 80 → 160 → 320 → 640). При 16 лошадях угадывать бесполезно.</p>
+<h2>Уязвимость</h2>
+<p>Эндпоинт ставок защищён middleware:</p>
+<pre><code class="language-rust">async fn betting_open(State(state): State&lt;SharedState&gt;, request: Request, next: Next) -&gt; ... {
+    if state.read().await.timer &gt;= 30 {
+        return Err((StatusCode::BAD_REQUEST, &quot;Race already started&quot;.to_string()));
+    }
+    Ok(next.run(request).await)
+}
+</code></pre>
+<p>Обработчик получает ставку как <code>Json&lt;BetRequest&gt;</code>. В axum middleware выполняется сразу, как только пришли <strong>заголовки запроса</strong>, а JSON-тело читается позже, когда срабатывает экстрактор обработчика.</p>
+<p>Получается, что проверка «открыты ли ставки?» происходит в момент заголовков, а сама ставка (какая лошадь и сколько) определяется в момент тела. Если отправить заголовки, пока ставки открыты, и <strong>придержать тело</strong>, можно дождаться почти конца забега и выбрать лошадь, которая явно побеждает. Название подсказывает: hold your horses (bytes) — «придержите байты».</p>
+<h2>Эксплуатация</h2>
+<ol>
+<li>Раз в секунду опрашиваем <code>GET /api/state</code>.</li>
+<li>Когда <code>timer</code> между 25 и 28, открываем обычное TCP-соединение и отправляем только заголовки <code>POST /api/bet</code> с фиксированным <code>Content-Length</code>.</li>
+<li>Продолжаем следить за забегом. Когда лидер доходит примерно до 85, отправляем тело: <code>{"horse": &lt;лидер&gt;, "amount": &lt;все очки&gt;}</code>.</li>
+<li>Длина тела должна точно совпадать с <code>Content-Length</code>, поэтому JSON дополняется пробелами (JSON допускает пробелы).</li>
+<li>Повторяем 6 забегов и читаем флаг из <code>vip</code>.</li>
+</ol>
+<p>Основная идея на Python:</p>
+<pre><code class="language-python">s = socket.create_connection((HOST, PORT))
+s.sendall(b&quot;POST /api/bet HTTP/1.1\r\nHost: x\r\n&quot;
+          b&quot;Content-Type: application/json\r\n&quot;
+          b&quot;Content-Length: 64\r\n\r\n&quot;)   # betting is still open here
+# ... wait until the leader is close to the finish line ...
+body = json.dumps({&quot;horse&quot;: leader, &quot;amount&quot;: points}).ljust(64).encode()
+s.sendall(body)                              # bet decided now
+</code></pre>
+<p>Все 6 ставок выиграли: 10 → 20 → 40 → 80 → 160 → 320 → 640 очков, и поле <code>vip</code> вернуло флаг. Запросы отправлялись примерно раз в секунду.</p>
+<h2>Флаг</h2>
+<p><code>PP{h0ld_y0ur_byt3s_n0t_y0ur_h0rs3s::e8KHzo9mPTrc}</code></p>
+<h2>Вывод</h2>
+<p>Проверка авторизации или состояния в middleware верна только в момент выполнения. Если решение зависит от данных, которые приходят позже (тело), проверка должна быть там, где эти данные используются: внутри обработчика, под той же блокировкой, которая применяет ставку.</p></article></div><div data-l="en" hidden><article class="md" lang="en"><h1>Hold Your Horses (Web)</h1>
 <h2>The challenge</h2>
 <p>A horse racing betting site written in Rust (axum). We start with <strong>10 points</strong> and the <code>/api/state</code> endpoint shows the flag in the <code>vip</code> field once we reach <strong>500 points</strong>. Source code was provided.</p>
 <h2>How the game works</h2>
@@ -70,8 +155,7 @@ s.sendall(body)                              # bet decided now
 <h2>Flag</h2>
 <p><code>PP{h0ld_y0ur_byt3s_n0t_y0ur_h0rs3s::e8KHzo9mPTrc}</code></p>
 <h2>Takeaway</h2>
-<p>An authorization or state check in middleware is only valid for the moment it runs. If the decision depends on data that arrives later (the body), the check must happen where that data is used, inside the handler, under the same lock that applies the bet.</p>
-</article>
+<p>An authorization or state check in middleware is only valid for the moment it runs. If the decision depends on data that arrives later (the body), the check must happen where that data is used, inside the handler, under the same lock that applies the bet.</p></article></div>
 <div class="pager"><span></span><a href="bish-bash-bosh.html" data-keep><span data-k="next">Keyingi</span>: Bish Bash Bosh →</a></div>
 </main>
 <footer><div class="wrap"><span>© <span id="year"></span> Valililloh Kholmirzaev</span><a href="/" data-keep>kholmirzaev.uz</a></div></footer>

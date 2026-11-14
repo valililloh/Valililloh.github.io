@@ -2,7 +2,7 @@
 """CTF writeup sahifalarini Markdown'dan yasaydi.
 
 Ishlatish:  python3 tools/build_ctf.py
-Manba:      ctf/<musobaqa>/src/*.md   (README.md — umumiy sahifa ma'lumoti uchun emas, faqat arxiv)
+Manba:      ctf/<musobaqa>/src/<nom>.<uz|ru|en>.md   (README.md faqat arxiv uchun)
 Natija:     ctf/<musobaqa>/index.html va har bir writeup uchun <nom>.html
 
 Yangi musobaqa qo'shish: EVENTS ro'yxatiga yangi element qo'shing va src/ papkasiga .md fayllarni qo'ying.
@@ -19,13 +19,13 @@ SITE = "https://kholmirzaev.uz"
 UI = {
     "uz": {"home": "Bosh sahifa", "all": "Barcha writeup'lar", "prev": "Oldingi", "next": "Keyingi",
            "solved": "Yechildi, writeup yo'q", "read": "O'qish", "lessons": "Nimani o'rgandim",
-           "chal": "Topshiriqlar", "orig": "Writeup ingliz tilida yozilgan.", "orig_uz": "Writeup o'zbek tilida yozilgan."},
+           "chal": "Topshiriqlar"},
     "ru": {"home": "На главную", "all": "Все райтапы", "prev": "Назад", "next": "Далее",
            "solved": "Решено, без райтапа", "read": "Читать", "lessons": "Что я понял",
-           "chal": "Задания", "orig": "Райтап написан на английском.", "orig_uz": "Райтап написан на узбекском."},
+           "chal": "Задания"},
     "en": {"home": "Home", "all": "All writeups", "prev": "Previous", "next": "Next",
            "solved": "Solved, no writeup", "read": "Read", "lessons": "Lessons learned",
-           "chal": "Challenges", "orig": "The writeup is in English.", "orig_uz": "The writeup is in Uzbek."},
+           "chal": "Challenges"},
 }
 
 EVENTS = [
@@ -48,7 +48,7 @@ EVENTS = [
         "challenges": [
             {"file": "hold-your-horses", "title": "Hold Your Horses", "cat": "Web"},
             {"file": "bish-bash-bosh", "title": "Bish Bash Bosh", "cat": "Misc"},
-            {"file": "diceware-warmup", "title": "Diceware (warmup)", "cat": "Crypto", "lang": "uz"},
+            {"file": "diceware-warmup", "title": "Diceware (warmup)", "cat": "Crypto"},
             {"file": "signpost", "title": "Signpost", "cat": "OSINT"},
             {"file": None, "title": "Reverse Image Search", "cat": "OSINT"},
         ],
@@ -175,24 +175,24 @@ def build_event(ev):
 
     # ---------- Har bir writeup ----------
     for i, c in enumerate(written):
-        text = (src / f"{c['file']}.md").read_text(encoding="utf-8")
+        def render(l, c=c):
+            """Har bir til uchun src/<nom>.<til>.md; tarjima bo'lmasa bor tildagisi ko'rsatiladi."""
+            path = next(p for p in (src / f"{c['file']}.{x}.md" for x in (l, "en", "uz", "ru")) if p.exists())
+            html_ = markdown.markdown(path.read_text(encoding="utf-8"), extensions=["fenced_code", "tables", "sane_lists"])
+            html_ = re.sub(r'href="([a-z0-9-]+)\.md"', r'href="\1.html"', html_)
+            html_ = re.sub(r'<a href="(https?://[^"]+)"', r'<a href="\1" target="_blank" rel="noopener"', html_)
+            return f'<article class="md" lang="{path.suffixes[0][1:]}">{html_}</article>'
         title = c["title"]  # sahifa sarlavhasi qisqa nom bilan; .md dagi H1 yashiriladi
-        content = markdown.markdown(text, extensions=["fenced_code", "tables", "sane_lists"])
-        content = re.sub(r'href="([a-z0-9-]+)\.md"', r'href="\1.html"', content)
-        content = re.sub(r'<a href="(https?://[^"]+)"', r'<a href="\1" target="_blank" rel="noopener"', content)
+        content = by_lang(render)
         prev_c = written[i - 1] if i > 0 else None
         next_c = written[i + 1] if i + 1 < len(written) else None
         pager = '<div class="pager">'
         pager += (f'<a href="{prev_c["file"]}.html" data-keep>← <span data-k="prev">{UI["uz"]["prev"]}</span>: {e(prev_c["title"])}</a>' if prev_c else "<span></span>")
         pager += (f'<a href="{next_c["file"]}.html" data-keep><span data-k="next">{UI["uz"]["next"]}</span>: {e(next_c["title"])} →</a>' if next_c else "")
         pager += "</div>"
-        note_key = "orig_uz" if c.get("lang") == "uz" else "orig"
-        note = by_lang(lambda l: f'<p>{e(UI[l][note_key])}</p>')
         body = f"""<div class="story-nav"><a href="./" data-keep>← <span data-k="all">{UI['uz']['all']}</span></a><small>{e(ev['name'])} · {e(c['cat'])}</small></div>
-<div class="story-hero"><div class="eyebrow">{e(ev['name'])} · {e(c['cat'])}</div><h1>{e(title)}</h1>{note}</div>
-<article class="md" lang="{c.get('lang', 'en')}">
+<div class="story-hero"><div class="eyebrow">{e(ev['name'])} · {e(c['cat'])}</div><h1>{e(title)}</h1></div>
 {content}
-</article>
 {pager}"""
         desc = f"{ev['name']} CTF writeup: {c['title']} ({c['cat']})."
         (base / f"{c['file']}.html").write_text(page(f"{title} — {ev['name']}", desc, f"{url}{c['file']}.html", body), encoding="utf-8")

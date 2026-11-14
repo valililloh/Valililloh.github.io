@@ -25,9 +25,8 @@
 <nav><div class="wrap"><a href="/" class="logo" data-keep>kholmirzaev<span>.uz</span></a><div class="nav-right"><div class="lang" role="group" aria-label="Language"><button type="button" data-lang="uz">UZ</button><button type="button" data-lang="ru">RU</button><button type="button" data-lang="en">EN</button></div></div></div></nav>
 <main class="story">
 <div class="story-nav"><a href="./" data-keep>← <span data-k="all">Barcha writeup'lar</span></a><small>Platypwn 2026 · Crypto</small></div>
-<div class="story-hero"><div class="eyebrow">Platypwn 2026 · Crypto</div><h1>Diceware (warmup)</h1><div data-l="uz"><p>Writeup o&#x27;zbek tilida yozilgan.</p></div><div data-l="ru" hidden><p>Райтап написан на узбекском.</p></div><div data-l="en" hidden><p>The writeup is in Uzbek.</p></div></div>
-<article class="md" lang="uz">
-<h1>Platypwn CTF 2026 — Diceware (Warmup) Write-up</h1>
+<div class="story-hero"><div class="eyebrow">Platypwn 2026 · Crypto</div><h1>Diceware (warmup)</h1></div>
+<div data-l="uz"><article class="md" lang="uz"><h1>Platypwn CTF 2026 — Diceware (Warmup) Write-up</h1>
 <p><strong>Kategoriya:</strong> Cryptography / Web<br />
 <strong>Bosqich:</strong> Warmup (1-flag)<br />
 <strong>Holat:</strong> Yechilgan va CTF platformasida qabul qilingan<br />
@@ -81,8 +80,115 @@
 <p>Bu yerda oddiy parol taxmin qilish usuli ishlatilmadi. Muammo <strong>ishonchsiz <code>wordlist</code> URL va autentifikatsiyalanmagan PIR javobi</strong> edi. Ilova kriptografik javobning tuzilishini tekshirardi, lekin u albatta ishonchli wordlist serveridan kelganini kafolatlamasdi. Shuning uchun parol yaratish jarayonidagi so‘zlarni nazorat qilish mumkin bo‘ldi.</p>
 <h2>Xulosa</h2>
 <p><code>Diceware</code> topshirig‘ida birinchi — <strong>Warmup</strong> — flag olindi. Arxivdagi kodni o‘rganish, Python orqali mos PIR javobini yaratish va VPN orqali CTF muhitida sinash yechimga olib keldi.</p>
-<p><strong>Muhim:</strong> bu write-up faqat topilgan birinchi flagga tegishli. <code>User</code> va <code>Admin</code> flaglari ushbu sinovda topilmagan.</p>
-</article>
+<p><strong>Muhim:</strong> bu write-up faqat topilgan birinchi flagga tegishli. <code>User</code> va <code>Admin</code> flaglari ushbu sinovda topilmagan.</p></article></div><div data-l="ru" hidden><article class="md" lang="ru"><h1>Platypwn CTF 2026 — Diceware (Warmup) Write-up</h1>
+<p><strong>Категория:</strong> Cryptography / Web<br />
+<strong>Этап:</strong> Warmup (флаг 1)<br />
+<strong>Статус:</strong> Решено и принято на платформе CTF<br />
+<strong>Флаг:</strong> <code>PP{yOu_4r3_7h3_5rv3r_n0w::ycF1hSK_GsIN}</code></p>
+<h2>Задание</h2>
+<p>Был выдан архив <code>crypto.diceware.zip</code>. В нём были менеджер паролей на Python/Flask, модуль PIR (Private Information Retrieval) на Rust и код сервера словаря. Цель — войти в аккаунт <code>Warmup User</code> и получить запись <strong>warmup flag</strong> внутри него.</p>
+<p>OSINT-картинки в этом задании не было: главными уликами были исходный код из ZIP и запущенный сервис CTF.</p>
+<h2>Инструменты</h2>
+<ul>
+<li><strong>ZIP-архив и исходный код:</strong> <code>web/app/app.py</code>, <code>web/app/diceware.py</code>, <code>inspire/src/pir.rs</code>, <code>wordlist_server/src/main.rs</code></li>
+<li><strong>Termux</strong> — доступ к терминалу с телефона</li>
+<li><strong>Ubuntu VPS + WireGuard</strong> — подключение к сети CTF</li>
+<li><strong>Python 3</strong> — сервер PIR-ответов и автоматическая проверка</li>
+<li><strong>HTTP-запросы</strong> — сброс пароля и проверка входа</li>
+</ul>
+<h2>Решение</h2>
+<h3>1. Поиск слабого места в коде</h3>
+<p>В <code>web/app/app.py</code> был эндпоинт <code>POST /reset_password</code>. Он принимал <code>username</code> и <code>wordlist</code> и создавал новый пароль так:</p>
+<pre><code class="language-python">new_password = generate_password(
+    CLIENT_USERS,
+    str(request.form.get(&quot;wordlist&quot;, DEFAULT_WORDLIST))
+)
+</code></pre>
+<p>Сброс пароля для <code>FlagUser</code> был запрещён, а для <code>Warmup User</code> — разрешён.</p>
+<p><code>web/app/diceware.py</code> отправлял <strong>POST</strong> на адрес <code>wordlist</code> из запроса и превращал полученный PIR-ответ в слова пароля. Главная ошибка: адрес <code>wordlist</code> контролировал пользователь, а сервис доверял криптографическому ответу, пришедшему с него.</p>
+<h3>2. Управление PIR-ответом</h3>
+<p>Простого текстового ответа <code>pebble</code> было недостаточно. Сервер ждал правильный <code>Content-Type</code> и <strong>зашифрованный ответ в формате PIR</strong>.</p>
+<p>Поэтому я написал скрипт <code>diceware_pir_solution.py</code>. Он извлекал модуль (<code>n</code>) открытого ключа Paillier из входящего PIR-запроса и собирал подходящий зашифрованный ответ, кодирующий слово <code>pebble</code>. Ответ сериализовался в формате <code>postcard</code>, который ожидает клиент на Rust.</p>
+<p>У скрипта было два режима:</p>
+<pre><code class="language-bash">python3 diceware_pir_solution.py serve --word pebble --port 9000
+</code></pre>
+<p>Затем во втором терминале — для сервиса CTF, каким он был в тот момент:</p>
+<pre><code class="language-bash">python3 diceware_pir_solution.py solve \
+  --base http://10.83.9.64:8081 \
+  --callback http://10.82.1.33:9000/ \
+  --word pebble
+</code></pre>
+<p><strong>Примечание:</strong> IP-адреса относились к сессии CTF и позже могут измениться.</p>
+<h3>3. Пароль известен заранее</h3>
+<p><code>generate_password()</code> составлял каждый пароль из <strong>6 слов</strong>. Наш поддельный PIR-сервер на каждый запрос словаря возвращал одно и то же слово — <code>pebble</code>.</p>
+<p>В итоге новый пароль был известен заранее:</p>
+<pre><code class="language-text">pebble pebble pebble pebble pebble pebble
+</code></pre>
+<p>В процессе было обработано шесть PIR-запросов. Затем скрипт вошёл как <code>Warmup User</code> и прочитал записи аккаунта.</p>
+<h3>4. Получение и подтверждение флага</h3>
+<p>После успешного входа открылась запись <strong>warmup flag</strong> в менеджере паролей, и в ней был флаг:</p>
+<pre><code class="language-text">PP{yOu_4r3_7h3_5rv3r_n0w::ycF1hSK_GsIN}
+</code></pre>
+<p>Флаг был отправлен на платформу CTF в формате <code>PP{...}</code>. Первая попытка не была принята, но при следующей отправке платформа подтвердила: <strong>«Nice! Flag accepted!»</strong>.</p>
+<h2>Причина уязвимости</h2>
+<p>Подбор пароля здесь не использовался. Проблема была в <strong>недоверенном адресе <code>wordlist</code> и неаутентифицированном PIR-ответе</strong>. Приложение проверяло структуру криптографического ответа, но не гарантировало, что он пришёл с доверенного сервера словаря. Поэтому можно было управлять словами, из которых создаётся пароль.</p>
+<h2>Итог</h2>
+<p>В задании <code>Diceware</code> решён первый флаг — <strong>Warmup</strong>. К решению привели изучение кода из архива, создание подходящего PIR-ответа на Python и проверка через VPN в среде CTF.</p>
+<p><strong>Важно:</strong> этот райтап касается только первого флага. Флаги <code>User</code> и <code>Admin</code> в этой попытке найдены не были.</p></article></div><div data-l="en" hidden><article class="md" lang="en"><h1>Platypwn CTF 2026 — Diceware (Warmup) Write-up</h1>
+<p><strong>Category:</strong> Cryptography / Web<br />
+<strong>Stage:</strong> Warmup (flag 1)<br />
+<strong>Status:</strong> Solved and accepted on the CTF platform<br />
+<strong>Flag:</strong> <code>PP{yOu_4r3_7h3_5rv3r_n0w::ycF1hSK_GsIN}</code></p>
+<h2>The challenge</h2>
+<p>We were given the <code>crypto.diceware.zip</code> archive. It contained a Python/Flask password manager, a PIR (Private Information Retrieval) module written in Rust, and the code of a wordlist server. The goal was to log in to the <code>Warmup User</code> account and get the <strong>warmup flag</strong> entry stored in it.</p>
+<p>This challenge had no OSINT image: the main evidence was the source code in the ZIP and the running CTF service.</p>
+<h2>Tools used</h2>
+<ul>
+<li><strong>ZIP archive and source code:</strong> <code>web/app/app.py</code>, <code>web/app/diceware.py</code>, <code>inspire/src/pir.rs</code>, <code>wordlist_server/src/main.rs</code></li>
+<li><strong>Termux</strong> — terminal access from the phone</li>
+<li><strong>Ubuntu VPS + WireGuard</strong> — connection to the CTF network</li>
+<li><strong>Python 3</strong> — PIR response server and automated testing</li>
+<li><strong>HTTP requests</strong> — password reset and login check</li>
+</ul>
+<h2>Solution</h2>
+<h3>1. Finding the weak spot in the code</h3>
+<p><code>web/app/app.py</code> had a <code>POST /reset_password</code> endpoint. It took <code>username</code> and <code>wordlist</code> values and generated a new password like this:</p>
+<pre><code class="language-python">new_password = generate_password(
+    CLIENT_USERS,
+    str(request.form.get(&quot;wordlist&quot;, DEFAULT_WORDLIST))
+)
+</code></pre>
+<p>Resetting the password was forbidden for <code>FlagUser</code>, but allowed for <code>Warmup User</code>.</p>
+<p><code>web/app/diceware.py</code> sent a <strong>POST</strong> to the <code>wordlist</code> URL from the request and turned the PIR response it got back into password words. The key flaw: the <code>wordlist</code> URL was controlled by the user, and the service trusted the cryptographic response that came back from it.</p>
+<h3>2. Controlling the PIR response</h3>
+<p>A plain-text <code>pebble</code> response was not enough. The server expected the right <code>Content-Type</code> and an <strong>encrypted response in PIR format</strong>.</p>
+<p>So I wrote the <code>diceware_pir_solution.py</code> script. It extracted the Paillier public key modulus (<code>n</code>) from the incoming PIR query and built a matching encrypted response that encodes the word <code>pebble</code>. The response was serialized in the <code>postcard</code> format that the Rust client expects.</p>
+<p>The script had two modes:</p>
+<pre><code class="language-bash">python3 diceware_pir_solution.py serve --word pebble --port 9000
+</code></pre>
+<p>Then, in a second terminal, against the CTF service as it was at that time:</p>
+<pre><code class="language-bash">python3 diceware_pir_solution.py solve \
+  --base http://10.83.9.64:8081 \
+  --callback http://10.82.1.33:9000/ \
+  --word pebble
+</code></pre>
+<p><strong>Note:</strong> the IP addresses belonged to the CTF session and may change later.</p>
+<h3>3. Knowing the password in advance</h3>
+<p><code>generate_password()</code> built every password from <strong>6 words</strong>. Our fake PIR server returned the same word, <code>pebble</code>, for every wordlist request.</p>
+<p>So the new password was known in advance:</p>
+<pre><code class="language-text">pebble pebble pebble pebble pebble pebble
+</code></pre>
+<p>Six PIR requests were processed during the run. Then the script logged in as <code>Warmup User</code> and read the entries in the account.</p>
+<h3>4. Getting and confirming the flag</h3>
+<p>After a successful login, the <strong>warmup flag</strong> entry in the password manager opened and showed this flag:</p>
+<pre><code class="language-text">PP{yOu_4r3_7h3_5rv3r_n0w::ycF1hSK_GsIN}
+</code></pre>
+<p>The flag was submitted to the CTF platform in <code>PP{...}</code> format. The first attempt was not accepted, but on the next submission the platform confirmed it with <strong>"Nice! Flag accepted!"</strong>.</p>
+<h2>Why it was vulnerable</h2>
+<p>No password guessing was used here. The problem was the <strong>untrusted <code>wordlist</code> URL and the unauthenticated PIR response</strong>. The app checked the structure of the cryptographic response, but did not make sure it came from a trusted wordlist server. That made it possible to control the words used to generate the password.</p>
+<h2>Summary</h2>
+<p>In the <code>Diceware</code> challenge the first flag, <strong>Warmup</strong>, was solved. Studying the code from the archive, building a matching PIR response in Python and testing through the VPN in the CTF environment led to the solution.</p>
+<p><strong>Important:</strong> this writeup covers only the first flag. The <code>User</code> and <code>Admin</code> flags were not found during this attempt.</p></article></div>
 <div class="pager"><a href="bish-bash-bosh.html" data-keep>← <span data-k="prev">Oldingi</span>: Bish Bash Bosh</a><a href="signpost.html" data-keep><span data-k="next">Keyingi</span>: Signpost →</a></div>
 </main>
 <footer><div class="wrap"><span>© <span id="year"></span> Valililloh Kholmirzaev</span><a href="/" data-keep>kholmirzaev.uz</a></div></footer>
