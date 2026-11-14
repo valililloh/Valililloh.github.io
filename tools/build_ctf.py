@@ -41,9 +41,9 @@ EVENTS = [
             "en": "My first CTF. I played solo from an Android phone only (Termux), with an Ubuntu VPS for the VPN and AI assistance (allowed for online teams), and solved 5 flags across Web, Misc, Crypto and OSINT.",
         },
         "facts": {
-            "uz": [("Tashkilotchi", "Platypwnies (HPI)"), ("Sana", "13–14 noyabr 2026, 18 soat"), ("Format", "Jeopardy"), ("Jamoa", "Kholmirzaev · yakka")],
-            "ru": [("Организатор", "Platypwnies (HPI)"), ("Дата", "13–14 ноября 2026, 18 часов"), ("Формат", "Jeopardy"), ("Команда", "Kholmirzaev · соло")],
-            "en": [("Organizer", "Platypwnies (HPI)"), ("Dates", "Nov 13–14, 2026, 18 hours"), ("Format", "Jeopardy"), ("Team", "Kholmirzaev · solo")],
+            "uz": [("Tashkilotchi", "Platypwnies (HPI)"), ("Sana", "13–14 noyabr 2026, 18 soat"), ("Format", "Jeopardy"), ("Jamoa", "Kholmirzaev · yakka"), ("Natija", "113-o'rin · 669 ochko")],
+            "ru": [("Организатор", "Platypwnies (HPI)"), ("Дата", "13–14 ноября 2026, 18 часов"), ("Формат", "Jeopardy"), ("Команда", "Kholmirzaev · соло"), ("Результат", "113 место · 669 очков")],
+            "en": [("Organizer", "Platypwnies (HPI)"), ("Dates", "Nov 13–14, 2026, 18 hours"), ("Format", "Jeopardy"), ("Team", "Kholmirzaev · solo"), ("Result", "#113 · 669 points")],
         },
         "challenges": [
             {"file": "hold-your-horses", "title": "Hold Your Horses", "cat": "Web"},

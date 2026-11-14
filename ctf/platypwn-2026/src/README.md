@@ -7,6 +7,8 @@
 
 This was my first CTF. I solved **5 flags** across Web, Misc, Crypto and OSINT.
 
+**Final result:** #113 with 669 points (Open Competition, dynamic scoring).
+
 | Challenge | Category | Writeup |
 |---|---|---|
 | Hold Your Horses | Web | [hold-your-horses.md](hold-your-horses.md) |
